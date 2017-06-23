@@ -10,6 +10,8 @@ import XCTest
 
 class CalculatorUITests: XCTestCase {
 
+    let app = XCUIApplication()
+
     override func setUp() {
         super.setUp()
 
@@ -28,9 +30,29 @@ class CalculatorUITests: XCTestCase {
         super.tearDown()
     }
 
-    func testExample() {
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testLabelExists() {
+        XCTAssert(app.staticTexts["0"].exists)
+    }
+
+    // Required Task #2
+
+    func testOnlyOneFloatingPoint() {
+
+        app.buttons["1"].tap()
+        app.buttons["."].tap()
+        app.buttons["."].tap()
+        app.buttons["."].tap()  // one more for good measure
+        app.buttons["5"].tap()
+
+        XCTAssert(app.staticTexts["1.5"].exists)
+    }
+
+    func testNicelyHandleFirstPeriodTap() {
+
+        app.buttons["."].tap()
+        app.buttons["."].tap()
+
+        XCTAssert(app.staticTexts["0."].exists)
     }
 
 }
