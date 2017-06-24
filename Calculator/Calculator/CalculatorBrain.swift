@@ -41,6 +41,8 @@ struct CalculatorBrain {
         "√"     :   Operation.unaryOperation(sqrt),
         "cos"   :   Operation.unaryOperation(cos),
         "±"     :   Operation.unaryOperation({ -$0 }),
+        "%"     :   Operation.unaryOperation({ $0 / 100.0 }),
+        "x²"    :   Operation.unaryOperation({ pow($0, 2) }),
         "×"     :   Operation.binaryOperation({ $0 * $1 }),
         "÷"     :   Operation.binaryOperation({ $0 / $1 }),
         "+"     :   Operation.binaryOperation({ $0 + $1 }),

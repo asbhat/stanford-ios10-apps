@@ -12,6 +12,12 @@ class CalculatorUITests: XCTestCase {
 
     let app = XCUIApplication()
 
+    let labelNames = ["0"]
+
+    let numpadButtonNames = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
+    let coreFunctionButtonNames = ["=", "C"]
+    let operationButtonNames = ["+", "-", "×", "÷", "±", "√", "cos", "%", "x²", "π", "e"]
+
     override func setUp() {
         super.setUp()
 
@@ -30,9 +36,49 @@ class CalculatorUITests: XCTestCase {
         super.tearDown()
     }
 
+    private func labelsExist(_ labelArray: [String], callingFile: StaticString = #file, callingLine: UInt = #line) {
+        for label in labelArray {
+            XCTAssert(app.staticTexts[label].exists, "\(label) label does not exist!", file: callingFile, line: callingLine)
+        }
+    }
+
+    private func labelsOnScreen(_ labelArray: [String], callingFile: StaticString = #file, callingLine: UInt = #line) {
+        let window = app.windows.element(boundBy: 0)
+        for labelName in labelArray {
+            let label = app.staticTexts[labelName]
+            XCTAssert(window.frame.contains(label.frame), file: callingFile, line: callingLine)
+        }
+    }
+
+    private func buttonsExist(_ buttonArray: [String], callingFile: StaticString = #file, callingLine: UInt = #line) {
+        for button in buttonArray {
+            XCTAssert(app.buttons[button].exists, "\(button) button does not exist!", file: callingFile, line:callingLine)
+        }
+    }
+
+    private func buttonsOnScreen(_ buttonArray: [String], callingFile: StaticString = #file, callingLine: UInt = #line) {
+        print("file: \(callingFile), line: \(callingLine)")
+        let window = app.windows.element(boundBy: 0)
+        for buttonName in buttonArray {
+            let button = app.buttons[buttonName]
+            XCTAssert(window.frame.contains(button.frame), file: callingFile, line: callingLine)
+        }
+    }
+
     func testLabelExists() {
         XCTAssert(app.staticTexts["0"].exists)
     }
+
+    func testLabelReadable() {
+        XCUIDevice.shared().orientation = .portrait
+        sleep(2)
+        XCTAssert(app.staticTexts["0"].frame.height >= 48)
+
+        XCUIDevice.shared().orientation = .landscapeLeft
+        sleep(2)
+        XCTAssert(app.staticTexts["0"].frame.height >= 48)
+    }
+
 
     // Required Task #2
 
@@ -53,6 +99,47 @@ class CalculatorUITests: XCTestCase {
         app.buttons["."].tap()
 
         XCTAssert(app.staticTexts["0."].exists)
+    }
+
+    func testLabelsOnScreenWithRotation() {
+
+        labelsExist(labelNames)
+
+        XCUIDevice.shared().orientation = .portrait
+        sleep(2)
+        labelsOnScreen(labelNames)
+
+        XCUIDevice.shared().orientation = .landscapeLeft
+        sleep(2)
+        labelsOnScreen(labelNames)
+
+        XCUIDevice.shared().orientation = .landscapeRight
+        sleep(2)
+        labelsOnScreen(labelNames)
+    }
+
+    func testButtonsOnScreenWithRotation() {
+        buttonsExist(numpadButtonNames)
+        buttonsExist(coreFunctionButtonNames)
+        buttonsExist(operationButtonNames)
+
+        XCUIDevice.shared().orientation = .portrait
+        sleep(2)
+        buttonsOnScreen(numpadButtonNames)
+        buttonsOnScreen(coreFunctionButtonNames)
+        buttonsOnScreen(operationButtonNames)
+
+        XCUIDevice.shared().orientation = .landscapeLeft
+        sleep(2)
+        buttonsOnScreen(numpadButtonNames)
+        buttonsOnScreen(coreFunctionButtonNames)
+        buttonsOnScreen(operationButtonNames)
+
+        XCUIDevice.shared().orientation = .landscapeRight
+        sleep(2)
+        buttonsOnScreen(numpadButtonNames)
+        buttonsOnScreen(coreFunctionButtonNames)
+        buttonsOnScreen(operationButtonNames)
     }
 
 }
