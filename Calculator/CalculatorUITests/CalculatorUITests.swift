@@ -12,7 +12,7 @@ class CalculatorUITests: XCTestCase {
 
     let app = XCUIApplication()
 
-    let labelNames = ["0"]
+    let labelNames = ["0", " "]
 
     let numpadButtonNames = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
     let coreFunctionButtonNames = ["=", "C"]
@@ -142,4 +142,133 @@ class CalculatorUITests: XCTestCase {
         buttonsOnScreen(operationButtonNames)
     }
 
+
+    // Required Task #7
+
+    func testA() {
+        app.buttons["7"].tap()
+        app.buttons["+"].tap()
+
+        XCTAssert(app.staticTexts["7.0 + ..."].exists)
+        XCTAssert(app.staticTexts["7"].exists)
+
+    }
+
+    func testB() {
+        app.buttons["7"].tap()
+        app.buttons["+"].tap()
+        app.buttons["9"].tap()
+
+        XCTAssert(app.staticTexts["7.0 + ..."].exists)
+        XCTAssert(app.staticTexts["9"].exists)
+    }
+
+    func testC() {
+        app.buttons["7"].tap()
+        app.buttons["+"].tap()
+        app.buttons["9"].tap()
+        app.buttons["="].tap()
+
+        XCTAssert(app.staticTexts["7.0 + 9.0 ="].exists)
+        XCTAssert(app.staticTexts["16.0"].exists)
+    }
+
+    func testD() {
+        app.buttons["7"].tap()
+        app.buttons["+"].tap()
+        app.buttons["9"].tap()
+        app.buttons["="].tap()
+        app.buttons["√"].tap()
+
+        XCTAssert(app.staticTexts["√(7.0 + 9.0) ="].exists)
+        XCTAssert(app.staticTexts["4.0"].exists)
+    }
+
+    func testE() {
+        app.buttons["7"].tap()
+        app.buttons["+"].tap()
+        app.buttons["9"].tap()
+        app.buttons["="].tap()
+        app.buttons["√"].tap()
+        app.buttons["+"].tap()
+        app.buttons["2"].tap()
+        app.buttons["="].tap()
+
+        XCTAssert(app.staticTexts["√(7.0 + 9.0) + 2.0 ="].exists)
+        XCTAssert(app.staticTexts["6.0"].exists)
+    }
+
+    func testF() {
+        app.buttons["7"].tap()
+        app.buttons["+"].tap()
+        app.buttons["9"].tap()
+        app.buttons["√"].tap()
+
+        XCTAssert(app.staticTexts["7.0 + √(9.0) ..."].exists)
+        XCTAssert(app.staticTexts["3.0"].exists)
+    }
+
+    func testG() {
+        app.buttons["7"].tap()
+        app.buttons["+"].tap()
+        app.buttons["9"].tap()
+        app.buttons["√"].tap()
+        app.buttons["="].tap()
+
+        XCTAssert(app.staticTexts["7.0 + √(9.0) ="].exists)
+        XCTAssert(app.staticTexts["10.0"].exists)
+    }
+
+    func testH() {
+        app.buttons["7"].tap()
+        app.buttons["+"].tap()
+        app.buttons["9"].tap()
+        app.buttons["="].tap()
+        app.buttons["+"].tap()
+        app.buttons["6"].tap()
+        app.buttons["="].tap()
+        app.buttons["+"].tap()
+        app.buttons["3"].tap()
+        app.buttons["="].tap()
+
+        XCTAssert(app.staticTexts["7.0 + 9.0 + 6.0 + 3.0 ="].exists)
+        XCTAssert(app.staticTexts["25.0"].exists)
+    }
+
+    func testI() {
+        app.buttons["7"].tap()
+        app.buttons["+"].tap()
+        app.buttons["9"].tap()
+        app.buttons["="].tap()
+        app.buttons["√"].tap()
+        app.buttons["6"].tap()
+        app.buttons["+"].tap()
+        app.buttons["3"].tap()
+        app.buttons["="].tap()
+
+        XCTAssert(app.staticTexts["6.0 + 3.0 ="].exists)
+        XCTAssert(app.staticTexts["9.0"].exists)
+    }
+
+    func testJ() {
+        app.buttons["5"].tap()
+        app.buttons["+"].tap()
+        app.buttons["6"].tap()
+        app.buttons["="].tap()
+        app.buttons["7"].tap()
+        app.buttons["3"].tap()
+
+        XCTAssert(app.staticTexts["5.0 + 6.0 ="].exists)
+        XCTAssert(app.staticTexts["73"].exists)
+    }
+
+    func testK() {
+        app.buttons["4"].tap()
+        app.buttons["×"].tap()
+        app.buttons["π"].tap()
+        app.buttons["="].tap()
+
+        XCTAssert(app.staticTexts["4.0 × π ="].exists)
+        XCTAssert(app.staticTexts["12.5663706143592"].exists)
+    }
 }

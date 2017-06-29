@@ -58,8 +58,17 @@ struct CalculatorBrain {
                 if (!resultIsPending) { description = accumulator.text }
             case .unaryOperation(let function):
                 if accumulator.value != nil {
+                    let oldAccumulatorText = accumulator.text!
                     accumulator = (function(accumulator.value!), "\(symbol)(\(accumulator.text!))")
-                    if (!resultIsPending) { description = accumulator.text }
+                    if !resultIsPending {
+                        description = accumulator.text
+                    } else {
+                        if description!.hasSuffix(oldAccumulatorText) {
+                            description = description!.replace(ending: oldAccumulatorText, with: accumulator.text!)
+                        } else {
+                            description! += " \(accumulator.text!)"
+                        }
+                    }
                 }
             case .binaryOperation(let function):
                 if accumulator.value != nil {
@@ -76,7 +85,9 @@ struct CalculatorBrain {
 
     private mutating func performPendingBinaryOperation() {
         if pendingBinaryOperation != nil && accumulator.value != nil {
-            description! += " \(accumulator.text!)"
+            if !description!.hasSuffix(" \(accumulator.text!)") {
+                description! += " \(accumulator.text!)"
+            }
             accumulator = (pendingBinaryOperation!.perform(with: accumulator.value!), description)
             pendingBinaryOperation = nil
         }
@@ -111,4 +122,13 @@ struct CalculatorBrain {
     }
 
     var description: String?
+}
+
+extension String {
+    func replace(ending: String, with replacement: String) -> String? {
+        guard self.hasSuffix(ending) else {
+            return nil
+        }
+        return String(self.characters.dropLast(ending.characters.count)) + replacement
+    }
 }

@@ -23,6 +23,7 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var display: UILabel!
+    @IBOutlet weak var history: UILabel!
 
     private var brain = CalculatorBrain()
 
@@ -63,6 +64,7 @@ class ViewController: UIViewController {
         if let result = brain.result {
             displayValue = result
         }
+        history.text = (brain.description ?? " ") + (brain.resultIsPending ? " ..." : " =")
     }
 
 }
