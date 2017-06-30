@@ -23,6 +23,69 @@ class CalculatorTests: XCTestCase {
         super.tearDown()
     }
 
+    func testSetOperand() {
+        brain.setOperand(8)
+
+        XCTAssert(brain.result == 8)
+        XCTAssertNil(brain.description)
+        XCTAssertFalse(brain.resultIsPending)
+    }
+
+    func testConstant() {
+        brain.performOperation("π")
+
+        XCTAssert(brain.result == Double.pi)
+        XCTAssert(brain.description == "π")
+        XCTAssertFalse(brain.resultIsPending)
+    }
+
+    func testUnaryOperation() {
+        brain.setOperand(8)
+        brain.performOperation("x²")
+
+        XCTAssert(brain.result == 64.0)
+        XCTAssert(brain.description == "x²(8.0)")
+        XCTAssertFalse(brain.resultIsPending)
+    }
+
+    func testBinaryOperation() {
+        brain.setOperand(8)
+        brain.performOperation("÷")
+
+        XCTAssertNil(brain.result)
+        XCTAssert(brain.description == "8.0 ÷")
+        XCTAssert(brain.resultIsPending)
+
+        brain.setOperand(4)
+
+        XCTAssert(brain.result == 4)
+        XCTAssert(brain.description == "8.0 ÷")
+        XCTAssert(brain.resultIsPending)
+
+        brain.performOperation("=")
+
+        XCTAssert(brain.result == 2.0)
+        XCTAssert(brain.description == "8.0 ÷ 4.0")
+        XCTAssertFalse(brain.resultIsPending)
+    }
+
+    func testMultipleUnaryDuringSecondBinary() {
+        brain.setOperand(8)
+        brain.performOperation("-")
+
+        brain.setOperand(81)
+        brain.performOperation("√")
+        XCTAssert(brain.result == 9.0)
+        XCTAssert(brain.description == "8.0 - √(81.0)")
+        XCTAssert(brain.resultIsPending)
+
+        brain.performOperation("√")
+
+        XCTAssert(brain.result == 3.0)
+        XCTAssert(brain.description == "8.0 - √(√(81.0))")
+        XCTAssert(brain.resultIsPending)
+    }
+
     func testClear() {
         let beginningBrainResult = brain.result
         let beginningBrainDescription = brain.description
