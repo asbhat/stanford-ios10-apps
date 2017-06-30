@@ -122,6 +122,12 @@ struct CalculatorBrain {
     }
 
     var description: String?
+
+    mutating func clear() {
+        accumulator = (nil, nil)
+        pendingBinaryOperation = nil
+        description = nil
+    }
 }
 
 extension String {

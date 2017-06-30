@@ -11,6 +11,8 @@ import XCTest
 
 class CalculatorTests: XCTestCase {
 
+    var brain = CalculatorBrain()
+
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -21,9 +23,22 @@ class CalculatorTests: XCTestCase {
         super.tearDown()
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testClear() {
+        let beginningBrainResult = brain.result
+        let beginningBrainDescription = brain.description
+        let beginningBrainResultIsPending = brain.resultIsPending
+
+        brain.setOperand(8)
+        brain.performOperation("-")
+        brain.setOperand(81)
+        brain.performOperation("√")
+        brain.performOperation("√")
+
+        brain.clear()
+
+        XCTAssert(brain.result == beginningBrainResult)
+        XCTAssert(brain.description == beginningBrainDescription)
+        XCTAssert(brain.resultIsPending == beginningBrainResultIsPending)
     }
 
     func testPerformanceExample() {

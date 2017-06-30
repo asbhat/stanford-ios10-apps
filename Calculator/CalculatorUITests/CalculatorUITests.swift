@@ -271,4 +271,27 @@ class CalculatorUITests: XCTestCase {
         XCTAssert(app.staticTexts["4.0 × π ="].exists)
         XCTAssert(app.staticTexts["12.5663706143592"].exists)
     }
+
+    func testClear() {
+        app.buttons["8"].tap()
+        app.buttons["±"].tap()
+        app.buttons["±"].tap()
+        app.buttons["%"].tap()
+        app.buttons["×"].tap()
+        app.buttons["1"].tap()
+        app.buttons["0"].tap()
+        app.buttons["0"].tap()
+        app.buttons["="].tap()
+
+        XCTAssert(app.staticTexts["%(±(±(8.0))) × 100.0 ="].exists)
+        XCTAssert(app.staticTexts["8.0"].exists)
+
+        app.buttons["C"].tap()
+        // for label in labelNames {XCTAssert(app.staticTexts[label].exists)}
+        XCTAssert(app.staticTexts["0.0"].exists)
+        XCTAssert(app.staticTexts[" "].exists)
+
+        app.buttons["8"].tap()
+        XCTAssert(app.staticTexts["8"].exists)
+    }
 }

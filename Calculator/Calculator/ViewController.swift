@@ -27,7 +27,7 @@ class ViewController: UIViewController {
 
     private var brain = CalculatorBrain()
 
-    var userIsInTheMiddleOfTyping = false
+    private var userIsInTheMiddleOfTyping = false
 
     @IBAction func touchDigit(_ sender: UIButton) {
         let digit = sender.currentTitle!
@@ -42,7 +42,7 @@ class ViewController: UIViewController {
         }
     }
 
-    var displayValue: Double {
+    private var displayValue: Double {
         get {
             return Double(display.text!)!
         }
@@ -64,7 +64,13 @@ class ViewController: UIViewController {
         if let result = brain.result {
             displayValue = result
         }
-        history.text = (brain.description ?? " ") + (brain.resultIsPending ? " ..." : " =")
+        history.text = brain.description == nil ? " " : brain.description! + (brain.resultIsPending ? " ..." : " =")
     }
 
+    @IBAction func clear(_ sender: UIButton) {
+        brain.clear()
+        displayValue = brain.result ?? 0
+        history.text = brain.description ?? " "
+        userIsInTheMiddleOfTyping = false
+    }
 }
