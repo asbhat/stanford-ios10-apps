@@ -73,4 +73,15 @@ class ViewController: UIViewController {
         history.text = brain.description ?? " "
         userIsInTheMiddleOfTyping = false
     }
+
+    @IBAction func backspace(_ sender: UIButton) {
+        if userIsInTheMiddleOfTyping {
+            if display.text!.characters.count > 1 {
+                display.text = String(display.text!.characters.dropLast())
+            } else {
+                display.text = "0"
+                userIsInTheMiddleOfTyping = false
+            }
+        }
+    }
 }

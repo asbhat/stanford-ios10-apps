@@ -15,8 +15,8 @@ class CalculatorUITests: XCTestCase {
     let labelNames = ["0", " "]
 
     let numpadButtonNames = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
-    let coreFunctionButtonNames = ["=", "C"]
-    let operationButtonNames = ["+", "-", "×", "÷", "±", "√", "cos", "%", "x²", "π", "e"]
+    let coreFunctionButtonNames = ["=", "C", "⌫"]
+    let operationButtonNames = ["+", "-", "×", "÷", "±", "√", "∛", "sin", "cos", "%", "x²", "x³", "π", "e"]
 
     override func setUp() {
         super.setUp()
@@ -293,5 +293,57 @@ class CalculatorUITests: XCTestCase {
 
         app.buttons["8"].tap()
         XCTAssert(app.staticTexts["8"].exists)
+    }
+
+    func testBackspaceEnterAndDeleteAll() {
+        app.buttons["⌫"].tap()
+        XCTAssert(app.staticTexts[" "].exists)
+        XCTAssert(app.staticTexts["0"].exists)
+
+        app.buttons["⌫"].tap()
+        XCTAssert(app.staticTexts[" "].exists)
+        XCTAssert(app.staticTexts["0"].exists)
+
+        app.buttons["1"].tap()
+        app.buttons["2"].tap()
+        app.buttons["3"].tap()
+        XCTAssert(app.staticTexts[" "].exists)
+        XCTAssert(app.staticTexts["123"].exists)
+
+        app.buttons["⌫"].tap()
+        XCTAssert(app.staticTexts[" "].exists)
+        XCTAssert(app.staticTexts["12"].exists)
+
+        app.buttons["⌫"].tap()
+        XCTAssert(app.staticTexts[" "].exists)
+        XCTAssert(app.staticTexts["1"].exists)
+
+        app.buttons["⌫"].tap()
+        XCTAssert(app.staticTexts[" "].exists)
+        XCTAssert(app.staticTexts["0"].exists)
+    }
+
+    func testBackspaceDuringOperations() {
+        app.buttons["8"].tap()
+        app.buttons["×"].tap()
+
+        app.buttons["⌫"].tap()
+        XCTAssert(app.staticTexts["8.0 × ..."].exists)
+        XCTAssert(app.staticTexts["8"].exists)
+
+        app.buttons["9"].tap()
+        app.buttons["⌫"].tap()
+        XCTAssert(app.staticTexts["8.0 × ..."].exists)
+        XCTAssert(app.staticTexts["0"].exists)
+
+        app.buttons["="].tap()
+        XCTAssert(app.staticTexts["8.0 × ..."].exists)
+        XCTAssert(app.staticTexts["0"].exists)
+
+        app.buttons["9"].tap()
+        app.buttons["="].tap()
+        app.buttons["⌫"].tap()
+        XCTAssert(app.staticTexts["8.0 × 9.0 ="].exists)
+        XCTAssert(app.staticTexts["72.0"].exists)
     }
 }
