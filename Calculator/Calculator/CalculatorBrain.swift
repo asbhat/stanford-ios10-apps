@@ -33,6 +33,9 @@ struct CalculatorBrain {
         case equals
     }
 
+    private let descriptionFormatter = NumberFormatter()
+    private let maximumDecimalPlaces = 6
+
     private var accumulator: (value: Double?, text: String?)
 
     private var operations: Dictionary<String, Operation> = [
@@ -109,7 +112,9 @@ struct CalculatorBrain {
     }
 
     mutating func setOperand(_ operand: Double) {
-        accumulator = (value: operand, text: String(operand))
+        descriptionFormatter.minimumIntegerDigits = 1
+        descriptionFormatter.maximumFractionDigits = operand.remainder(dividingBy: 1) == 0 ? 0 : maximumDecimalPlaces
+        accumulator = (value: operand, text: descriptionFormatter.string(from: NSNumber(value: operand)))
     }
 
     var result: Double? {

@@ -149,7 +149,7 @@ class CalculatorUITests: XCTestCase {
         app.buttons["7"].tap()
         app.buttons["+"].tap()
 
-        XCTAssert(app.staticTexts["7.0 + ..."].exists)
+        XCTAssert(app.staticTexts["7 + ..."].exists)
         XCTAssert(app.staticTexts["7"].exists)
 
     }
@@ -159,7 +159,7 @@ class CalculatorUITests: XCTestCase {
         app.buttons["+"].tap()
         app.buttons["9"].tap()
 
-        XCTAssert(app.staticTexts["7.0 + ..."].exists)
+        XCTAssert(app.staticTexts["7 + ..."].exists)
         XCTAssert(app.staticTexts["9"].exists)
     }
 
@@ -169,8 +169,8 @@ class CalculatorUITests: XCTestCase {
         app.buttons["9"].tap()
         app.buttons["="].tap()
 
-        XCTAssert(app.staticTexts["7.0 + 9.0 ="].exists)
-        XCTAssert(app.staticTexts["16.0"].exists)
+        XCTAssert(app.staticTexts["7 + 9 ="].exists)
+        XCTAssert(app.staticTexts["16"].exists)
     }
 
     func testD() {
@@ -180,8 +180,8 @@ class CalculatorUITests: XCTestCase {
         app.buttons["="].tap()
         app.buttons["√"].tap()
 
-        XCTAssert(app.staticTexts["√(7.0 + 9.0) ="].exists)
-        XCTAssert(app.staticTexts["4.0"].exists)
+        XCTAssert(app.staticTexts["√(7 + 9) ="].exists)
+        XCTAssert(app.staticTexts["4"].exists)
     }
 
     func testE() {
@@ -194,8 +194,8 @@ class CalculatorUITests: XCTestCase {
         app.buttons["2"].tap()
         app.buttons["="].tap()
 
-        XCTAssert(app.staticTexts["√(7.0 + 9.0) + 2.0 ="].exists)
-        XCTAssert(app.staticTexts["6.0"].exists)
+        XCTAssert(app.staticTexts["√(7 + 9) + 2 ="].exists)
+        XCTAssert(app.staticTexts["6"].exists)
     }
 
     func testF() {
@@ -204,8 +204,8 @@ class CalculatorUITests: XCTestCase {
         app.buttons["9"].tap()
         app.buttons["√"].tap()
 
-        XCTAssert(app.staticTexts["7.0 + √(9.0) ..."].exists)
-        XCTAssert(app.staticTexts["3.0"].exists)
+        XCTAssert(app.staticTexts["7 + √(9) ..."].exists)
+        XCTAssert(app.staticTexts["3"].exists)
     }
 
     func testG() {
@@ -215,8 +215,8 @@ class CalculatorUITests: XCTestCase {
         app.buttons["√"].tap()
         app.buttons["="].tap()
 
-        XCTAssert(app.staticTexts["7.0 + √(9.0) ="].exists)
-        XCTAssert(app.staticTexts["10.0"].exists)
+        XCTAssert(app.staticTexts["7 + √(9) ="].exists)
+        XCTAssert(app.staticTexts["10"].exists)
     }
 
     func testH() {
@@ -231,8 +231,8 @@ class CalculatorUITests: XCTestCase {
         app.buttons["3"].tap()
         app.buttons["="].tap()
 
-        XCTAssert(app.staticTexts["7.0 + 9.0 + 6.0 + 3.0 ="].exists)
-        XCTAssert(app.staticTexts["25.0"].exists)
+        XCTAssert(app.staticTexts["7 + 9 + 6 + 3 ="].exists)
+        XCTAssert(app.staticTexts["25"].exists)
     }
 
     func testI() {
@@ -246,8 +246,8 @@ class CalculatorUITests: XCTestCase {
         app.buttons["3"].tap()
         app.buttons["="].tap()
 
-        XCTAssert(app.staticTexts["6.0 + 3.0 ="].exists)
-        XCTAssert(app.staticTexts["9.0"].exists)
+        XCTAssert(app.staticTexts["6 + 3 ="].exists)
+        XCTAssert(app.staticTexts["9"].exists)
     }
 
     func testJ() {
@@ -258,7 +258,7 @@ class CalculatorUITests: XCTestCase {
         app.buttons["7"].tap()
         app.buttons["3"].tap()
 
-        XCTAssert(app.staticTexts["5.0 + 6.0 ="].exists)
+        XCTAssert(app.staticTexts["5 + 6 ="].exists)
         XCTAssert(app.staticTexts["73"].exists)
     }
 
@@ -268,8 +268,8 @@ class CalculatorUITests: XCTestCase {
         app.buttons["π"].tap()
         app.buttons["="].tap()
 
-        XCTAssert(app.staticTexts["4.0 × π ="].exists)
-        XCTAssert(app.staticTexts["12.5663706143592"].exists)
+        XCTAssert(app.staticTexts["4 × π ="].exists)
+        XCTAssert(app.staticTexts["12.566371"].exists)
     }
 
     func testClear() {
@@ -283,13 +283,11 @@ class CalculatorUITests: XCTestCase {
         app.buttons["0"].tap()
         app.buttons["="].tap()
 
-        XCTAssert(app.staticTexts["%(±(±(8.0))) × 100.0 ="].exists)
-        XCTAssert(app.staticTexts["8.0"].exists)
+        XCTAssert(app.staticTexts["%(±(±(8))) × 100 ="].exists)
+        XCTAssert(app.staticTexts["8"].exists)
 
         app.buttons["C"].tap()
-        // for label in labelNames {XCTAssert(app.staticTexts[label].exists)}
-        XCTAssert(app.staticTexts["0.0"].exists)
-        XCTAssert(app.staticTexts[" "].exists)
+        for label in labelNames { XCTAssert(app.staticTexts[label].exists) }
 
         app.buttons["8"].tap()
         XCTAssert(app.staticTexts["8"].exists)
@@ -328,22 +326,22 @@ class CalculatorUITests: XCTestCase {
         app.buttons["×"].tap()
 
         app.buttons["⌫"].tap()
-        XCTAssert(app.staticTexts["8.0 × ..."].exists)
+        XCTAssert(app.staticTexts["8 × ..."].exists)
         XCTAssert(app.staticTexts["8"].exists)
 
         app.buttons["9"].tap()
         app.buttons["⌫"].tap()
-        XCTAssert(app.staticTexts["8.0 × ..."].exists)
+        XCTAssert(app.staticTexts["8 × ..."].exists)
         XCTAssert(app.staticTexts["0"].exists)
 
         app.buttons["="].tap()
-        XCTAssert(app.staticTexts["8.0 × ..."].exists)
+        XCTAssert(app.staticTexts["8 × ..."].exists)
         XCTAssert(app.staticTexts["0"].exists)
 
         app.buttons["9"].tap()
         app.buttons["="].tap()
         app.buttons["⌫"].tap()
-        XCTAssert(app.staticTexts["8.0 × 9.0 ="].exists)
-        XCTAssert(app.staticTexts["72.0"].exists)
+        XCTAssert(app.staticTexts["8 × 9 ="].exists)
+        XCTAssert(app.staticTexts["72"].exists)
     }
 }

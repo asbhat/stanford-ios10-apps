@@ -43,8 +43,8 @@ class CalculatorTests: XCTestCase {
         brain.setOperand(8)
         brain.performOperation("x²")
 
-        XCTAssert(brain.result == 64.0)
-        XCTAssert(brain.description == "x²(8.0)")
+        XCTAssert(brain.result == 64)
+        XCTAssert(brain.description == "x²(8)")
         XCTAssertFalse(brain.resultIsPending)
     }
 
@@ -53,19 +53,19 @@ class CalculatorTests: XCTestCase {
         brain.performOperation("÷")
 
         XCTAssertNil(brain.result)
-        XCTAssert(brain.description == "8.0 ÷")
+        XCTAssert(brain.description == "8 ÷")
         XCTAssert(brain.resultIsPending)
 
         brain.setOperand(4)
 
         XCTAssert(brain.result == 4)
-        XCTAssert(brain.description == "8.0 ÷")
+        XCTAssert(brain.description == "8 ÷")
         XCTAssert(brain.resultIsPending)
 
         brain.performOperation("=")
 
-        XCTAssert(brain.result == 2.0)
-        XCTAssert(brain.description == "8.0 ÷ 4.0")
+        XCTAssert(brain.result == 2)
+        XCTAssert(brain.description == "8 ÷ 4")
         XCTAssertFalse(brain.resultIsPending)
     }
 
@@ -75,14 +75,14 @@ class CalculatorTests: XCTestCase {
 
         brain.setOperand(81)
         brain.performOperation("√")
-        XCTAssert(brain.result == 9.0)
-        XCTAssert(brain.description == "8.0 - √(81.0)")
+        XCTAssert(brain.result == 9)
+        XCTAssert(brain.description == "8 - √(81)")
         XCTAssert(brain.resultIsPending)
 
         brain.performOperation("√")
 
-        XCTAssert(brain.result == 3.0)
-        XCTAssert(brain.description == "8.0 - √(√(81.0))")
+        XCTAssert(brain.result == 3)
+        XCTAssert(brain.description == "8 - √(√(81))")
         XCTAssert(brain.resultIsPending)
     }
 

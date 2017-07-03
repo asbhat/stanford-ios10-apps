@@ -25,6 +25,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var display: UILabel!
     @IBOutlet weak var history: UILabel!
 
+    private let displayFormatter = NumberFormatter()
+    private let maximumDecimalPlaces = 6
+
     private var brain = CalculatorBrain()
 
     private var userIsInTheMiddleOfTyping = false
@@ -47,7 +50,9 @@ class ViewController: UIViewController {
             return Double(display.text!)!
         }
         set {
-            display.text = String(newValue)
+            displayFormatter.minimumIntegerDigits = 1
+            displayFormatter.maximumFractionDigits = newValue.remainder(dividingBy: 1) == 0 ? 0 : maximumDecimalPlaces
+            display.text = displayFormatter.string(from: NSNumber(value: newValue))
         }
     }
 
