@@ -28,6 +28,7 @@ struct CalculatorBrain {
 
     private enum Operation {
         case constant(Double)
+        case nullaryOperation(() -> Double)
         case unaryOperation((Double) -> Double)
         case binaryOperation((Double, Double) -> Double)
         case equals
@@ -41,6 +42,7 @@ struct CalculatorBrain {
     private var operations: Dictionary<String, Operation> = [
         "π"     :   Operation.constant(Double.pi),
         "e"     :   Operation.constant(M_E),
+        "Rand"  :   Operation.nullaryOperation({ Double(arc4random()) / Double(UINT32_MAX) }),
         "√"     :   Operation.unaryOperation(sqrt),
         "∛"     :   Operation.unaryOperation({ pow($0, 1.0/3.0) }),
         "sin"   :   Operation.unaryOperation(sin),
@@ -61,6 +63,9 @@ struct CalculatorBrain {
             switch operation {
             case .constant(let value):
                 accumulator = (value, symbol)
+                if (!resultIsPending) { description = accumulator.text }
+            case .nullaryOperation(let function):
+                accumulator = (function(), "\(symbol)()")
                 if (!resultIsPending) { description = accumulator.text }
             case .unaryOperation(let function):
                 if accumulator.value != nil {

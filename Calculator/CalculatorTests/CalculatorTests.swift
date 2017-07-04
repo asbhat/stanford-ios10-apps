@@ -39,6 +39,15 @@ class CalculatorTests: XCTestCase {
         XCTAssertFalse(brain.resultIsPending)
     }
 
+    func testNullaryOperation() {
+        brain.performOperation("Rand")
+
+        XCTAssert(brain.result! >= 0)
+        XCTAssert(brain.result! <= 1)
+        XCTAssert(brain.description == "Rand()")
+        XCTAssertFalse(brain.resultIsPending)
+    }
+
     func testUnaryOperation() {
         brain.setOperand(8)
         brain.performOperation("x²")
@@ -66,6 +75,24 @@ class CalculatorTests: XCTestCase {
 
         XCTAssert(brain.result == 2)
         XCTAssert(brain.description == "8 ÷ 4")
+        XCTAssertFalse(brain.resultIsPending)
+    }
+
+    func testNullaryDuringBinary() {
+        brain.setOperand(8)
+        brain.performOperation("+")
+        brain.performOperation("Rand")
+
+        XCTAssert(brain.result! >= 0)
+        XCTAssert(brain.result! <= 1)
+        XCTAssert(brain.description == "8 +")
+        XCTAssert(brain.resultIsPending)
+
+        brain.performOperation("=")
+
+        XCTAssert(brain.result! >= 8)
+        XCTAssert(brain.result! <= 9)
+        XCTAssert(brain.description == "8 + Rand()")
         XCTAssertFalse(brain.resultIsPending)
     }
 

@@ -16,7 +16,7 @@ class CalculatorUITests: XCTestCase {
 
     let numpadButtonNames = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
     let coreFunctionButtonNames = ["=", "C", "⌫"]
-    let operationButtonNames = ["+", "-", "×", "÷", "±", "√", "∛", "sin", "cos", "%", "x²", "x³", "π", "e"]
+    let operationButtonNames = ["+", "-", "×", "÷", "±", "√", "∛", "sin", "cos", "%", "x²", "x³", "π", "e", "Rand"]
 
     override func setUp() {
         super.setUp()
