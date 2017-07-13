@@ -70,11 +70,15 @@ class CalculatorUITests: XCTestCase {
     }
 
     func testLabelReadable() {
-        XCUIDevice.shared().orientation = .portrait
+        XCUIDevice.shared().orientation = .landscapeLeft
         sleep(2)
         XCTAssert(app.staticTexts["0"].frame.height >= 48)
 
-        XCUIDevice.shared().orientation = .landscapeLeft
+        XCUIDevice.shared().orientation = .landscapeRight
+        sleep(2)
+        XCTAssert(app.staticTexts["0"].frame.height >= 48)
+
+        XCUIDevice.shared().orientation = .portrait
         sleep(2)
         XCTAssert(app.staticTexts["0"].frame.height >= 48)
     }
@@ -105,15 +109,15 @@ class CalculatorUITests: XCTestCase {
 
         labelsExist(labelNames)
 
-        XCUIDevice.shared().orientation = .portrait
-        sleep(2)
-        labelsOnScreen(labelNames)
-
         XCUIDevice.shared().orientation = .landscapeLeft
         sleep(2)
         labelsOnScreen(labelNames)
 
         XCUIDevice.shared().orientation = .landscapeRight
+        sleep(2)
+        labelsOnScreen(labelNames)
+
+        XCUIDevice.shared().orientation = .portrait
         sleep(2)
         labelsOnScreen(labelNames)
     }
@@ -123,12 +127,6 @@ class CalculatorUITests: XCTestCase {
         buttonsExist(coreFunctionButtonNames)
         buttonsExist(operationButtonNames)
 
-        XCUIDevice.shared().orientation = .portrait
-        sleep(2)
-        buttonsOnScreen(numpadButtonNames)
-        buttonsOnScreen(coreFunctionButtonNames)
-        buttonsOnScreen(operationButtonNames)
-
         XCUIDevice.shared().orientation = .landscapeLeft
         sleep(2)
         buttonsOnScreen(numpadButtonNames)
@@ -136,6 +134,12 @@ class CalculatorUITests: XCTestCase {
         buttonsOnScreen(operationButtonNames)
 
         XCUIDevice.shared().orientation = .landscapeRight
+        sleep(2)
+        buttonsOnScreen(numpadButtonNames)
+        buttonsOnScreen(coreFunctionButtonNames)
+        buttonsOnScreen(operationButtonNames)
+
+        XCUIDevice.shared().orientation = .portrait
         sleep(2)
         buttonsOnScreen(numpadButtonNames)
         buttonsOnScreen(coreFunctionButtonNames)
