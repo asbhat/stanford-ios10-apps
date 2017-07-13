@@ -34,10 +34,24 @@ struct CalculatorBrain {
         case equals
     }
 
-    private let descriptionFormatter = NumberFormatter()
-    private let maximumDecimalPlaces = 6
+    private enum SequenceItem {
+        case operand((value: Double, text: String))
+        case operation(String)
+        case variable(String)
+    }
 
-    private var accumulator: (value: Double?, text: String?)
+    private let descriptionFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.minimumIntegerDigits = 1
+        return formatter
+    }()
+
+    // Better way to do constants
+    private struct OperandFormat {
+        static let maximumDecimalPlaces = 6
+    }
+
+    private var sequence = [SequenceItem]()
 
     private var operations: Dictionary<String, Operation> = [
         "π"     :   Operation.constant(Double.pi),
@@ -59,91 +73,122 @@ struct CalculatorBrain {
     ]
 
     mutating func performOperation(_ symbol: String) {
-        if let operation = operations[symbol] {
-            switch operation {
-            case .constant(let value):
-                accumulator = (value, symbol)
-                if (!resultIsPending) { description = accumulator.text }
-            case .nullaryOperation(let function):
-                accumulator = (function(), "\(symbol)()")
-                if (!resultIsPending) { description = accumulator.text }
-            case .unaryOperation(let function):
-                if accumulator.value != nil {
-                    let oldAccumulatorText = accumulator.text!
-                    accumulator = (function(accumulator.value!), "\(symbol)(\(accumulator.text!))")
-                    if !resultIsPending {
-                        description = accumulator.text
-                    } else {
-                        if description!.hasSuffix(oldAccumulatorText) {
-                            description = description!.replace(ending: oldAccumulatorText, with: accumulator.text!)
-                        } else {
-                            description! += " \(accumulator.text!)"
-                        }
-                    }
-                }
-            case .binaryOperation(let function):
-                if accumulator.value != nil {
-                    performPendingBinaryOperation()
-                    description = "\(accumulator.text!) \(symbol)"
-                    pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator.value!)
-                    accumulator = (nil, nil)
-                }
-            case .equals:
-                performPendingBinaryOperation()
-            }
-        }
-    }
-
-    private mutating func performPendingBinaryOperation() {
-        if pendingBinaryOperation != nil && accumulator.value != nil {
-            if !description!.hasSuffix(" \(accumulator.text!)") {
-                description! += " \(accumulator.text!)"
-            }
-            accumulator = (pendingBinaryOperation!.perform(with: accumulator.value!), description)
-            pendingBinaryOperation = nil
-        }
-    }
-
-    private var pendingBinaryOperation: PendingBinaryOperation?
-
-    private struct PendingBinaryOperation {
-        let function: (Double, Double) -> Double
-        let firstOperand: Double
-
-        func perform(with secondOperand: Double) -> Double {
-            return function(firstOperand, secondOperand)
-        }
-
+        sequence.append(.operation(symbol))
     }
 
     mutating func setOperand(_ operand: Double) {
-        descriptionFormatter.minimumIntegerDigits = 1
-        descriptionFormatter.maximumFractionDigits = operand.remainder(dividingBy: 1) == 0 ? 0 : maximumDecimalPlaces
-        accumulator = (value: operand, text: descriptionFormatter.string(from: NSNumber(value: operand)))
+        descriptionFormatter.maximumFractionDigits = operand.remainder(dividingBy: 1) == 0 ? 0 : OperandFormat.maximumDecimalPlaces
+        sequence.append(.operand((value: operand, text: descriptionFormatter.string(from: NSNumber(value: operand))!)))
     }
 
-    var result: Double? {
-        get {
-            return accumulator.value
-        }
+    mutating func setOperand(variable named: String) {
+        sequence.append(.variable(named))
     }
 
-    var resultIsPending: Bool {
-        get {
+    func evaluate(using variables: [String : Double]? = nil) -> (result: Double?, isPending: Bool, description: String) {
+        var result: (value: Double?, text: String?)
+        var description = " "
+
+        var pendingBinaryOperation: PendingBinaryOperation?
+        var isPending: Bool {
             return pendingBinaryOperation != nil
         }
+
+        func evaluate(_ sequence: [SequenceItem]) {
+            for item in sequence {
+                switch item {
+                case .operand(let (value, text)):
+                    result = (value, text)
+                    if (!isPending) { description = result.text! }
+                case .operation(let symbol):
+                    evaluate(operation: symbol)
+                case .variable(let name):
+                    result = (variables?[name] ?? 0, name)
+                }
+            }
+        }
+
+        func evaluate(operation symbol: String) {
+            if let operation = operations[symbol] {
+                switch operation {
+                case .constant(let value):
+                    result = (value, symbol)
+                    if (!isPending) { description = result.text! }
+                case .nullaryOperation(let function):
+                    result = (function(), "\(symbol)()")
+                    if (!isPending) { description = result.text! }
+                case .unaryOperation(let function):
+                    if let oldResult = result.value {
+                        let oldText = result.text!
+                        result = (function(oldResult), "\(symbol)(\(oldText))")
+                        if (!isPending) {
+                            description = result.text!
+                        } else {
+                            if description.hasSuffix(oldText) {
+                                description = description.replace(ending: oldText, with: result.text!)!
+                            } else {
+                                description += " \(result.text!)"
+                            }
+                        }
+                    }
+                case .binaryOperation(let function):
+                    if result.value != nil {
+                        evaluatePendingBinaryOperation()
+                        description = "\(result.text!) \(symbol)"
+                        pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: result.value!)
+                        result = (nil, nil)
+                    }
+                case .equals:
+                    evaluatePendingBinaryOperation()
+                }
+            }
+        }
+
+        func evaluatePendingBinaryOperation() {
+            if pendingBinaryOperation != nil && result.value != nil {
+                if !description.hasSuffix(" \(result.text!)") {
+                    description += " \(result.text!)"
+                }
+                result = (pendingBinaryOperation!.evaluate(with: result.value!), description)
+                pendingBinaryOperation = nil
+            }
+        }
+
+        struct PendingBinaryOperation {
+            let function: (Double, Double) -> Double
+            let firstOperand: Double
+
+            func evaluate(with secondOperand: Double) -> Double {
+                return function(firstOperand, secondOperand)
+            }
+        }
+
+        evaluate(sequence)
+
+        return (result.value, isPending, description)
     }
 
-    var description: String?
+    @available(*, deprecated, message: "Please use evaluate().result going forward")
+    var result: Double? {
+        return evaluate().result
+    }
+
+    @available(*, deprecated, message: "Please use evaluate().isPending going forward")
+    var resultIsPending: Bool {
+        return evaluate().isPending
+    }
+
+    @available(*, deprecated, message: "Please use evaluate().description going forward")
+    var description: String {
+        return evaluate().description
+    }
 
     mutating func clear() {
-        accumulator = (nil, nil)
-        pendingBinaryOperation = nil
-        description = nil
+        sequence.removeAll()
     }
 }
 
-extension String {
+private extension String {
     func replace(ending: String, with replacement: String) -> String? {
         guard self.hasSuffix(ending) else {
             return nil

@@ -25,8 +25,15 @@ class ViewController: UIViewController {
     @IBOutlet weak var display: UILabel!
     @IBOutlet weak var history: UILabel!
 
-    private let displayFormatter = NumberFormatter()
-    private let maximumDecimalPlaces = 6
+    private let displayFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.minimumIntegerDigits = 1
+        return formatter
+    }()
+
+    private struct DisplayFormat {
+        static let maximumDecimalPlaces = 6
+    }
 
     private var brain = CalculatorBrain()
 
@@ -50,8 +57,7 @@ class ViewController: UIViewController {
             return Double(display.text!)!
         }
         set {
-            displayFormatter.minimumIntegerDigits = 1
-            displayFormatter.maximumFractionDigits = newValue.remainder(dividingBy: 1) == 0 ? 0 : maximumDecimalPlaces
+            displayFormatter.maximumFractionDigits = newValue.remainder(dividingBy: 1) == 0 ? 0 : DisplayFormat.maximumDecimalPlaces
             display.text = displayFormatter.string(from: NSNumber(value: newValue))
         }
     }
@@ -69,13 +75,13 @@ class ViewController: UIViewController {
         if let result = brain.result {
             displayValue = result
         }
-        history.text = brain.description == nil ? " " : brain.description! + (brain.resultIsPending ? " ..." : " =")
+        history.text = brain.description == " " ? " " : brain.description + (brain.resultIsPending ? " ..." : " =")
     }
 
     @IBAction func clear(_ sender: UIButton) {
         brain.clear()
         displayValue = brain.result ?? 0
-        history.text = brain.description ?? " "
+        history.text = brain.description
         userIsInTheMiddleOfTyping = false
     }
 

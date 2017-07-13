@@ -27,7 +27,7 @@ class CalculatorTests: XCTestCase {
         brain.setOperand(8)
 
         XCTAssert(brain.result == 8)
-        XCTAssertNil(brain.description)
+        XCTAssert(brain.description == "8")
         XCTAssertFalse(brain.resultIsPending)
     }
 
@@ -96,6 +96,21 @@ class CalculatorTests: XCTestCase {
         XCTAssertFalse(brain.resultIsPending)
     }
 
+    func testMultipleConsecutiveBinary() {
+        brain.setOperand(6)
+        brain.performOperation("×")
+        brain.setOperand(5)
+        brain.performOperation("×")
+        brain.setOperand(4)
+        brain.performOperation("×")
+        brain.setOperand(3)
+        brain.performOperation("=")
+
+        XCTAssert(brain.result == 360)
+        XCTAssert(brain.description == "6 × 5 × 4 × 3")
+        XCTAssertFalse(brain.resultIsPending)
+    }
+
     func testMultipleUnaryDuringSecondBinary() {
         brain.setOperand(8)
         brain.performOperation("-")
@@ -129,6 +144,14 @@ class CalculatorTests: XCTestCase {
         XCTAssert(brain.result == beginningBrainResult)
         XCTAssert(brain.description == beginningBrainDescription)
         XCTAssert(brain.resultIsPending == beginningBrainResultIsPending)
+    }
+
+    func testSetVariableOperand() {
+        brain.setOperand(variable: "x")
+        brain.performOperation("cos")
+
+        XCTAssert(brain.description == "cos(x)")
+        XCTAssert(brain.result == 1)
     }
 
     func testPerformanceExample() {
