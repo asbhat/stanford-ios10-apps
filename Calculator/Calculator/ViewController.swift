@@ -71,17 +71,18 @@ class ViewController: UIViewController {
         if let mathematicalSymbol = sender.currentTitle {
             brain.performOperation(mathematicalSymbol)
         }
-
-        if let result = brain.result {
+        let (brainResult, brainIsPending, brainDescription) = brain.evaluate()
+        if let result = brainResult {
             displayValue = result
         }
-        history.text = brain.description == " " ? " " : brain.description + (brain.resultIsPending ? " ..." : " =")
+        history.text = brainDescription == " " ? " " : brainDescription + (brainIsPending ? " ..." : " =")
     }
 
     @IBAction func clear(_ sender: UIButton) {
         brain.clear()
-        displayValue = brain.result ?? 0
-        history.text = brain.description
+        let (result, _, description) = brain.evaluate()
+        displayValue = result ?? 0
+        history.text = description
         userIsInTheMiddleOfTyping = false
     }
 

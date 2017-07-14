@@ -26,56 +26,63 @@ class CalculatorTests: XCTestCase {
     func testSetOperand() {
         brain.setOperand(8)
 
-        XCTAssert(brain.result == 8)
-        XCTAssert(brain.description == "8")
-        XCTAssertFalse(brain.resultIsPending)
+        let (result, isPending, description) = brain.evaluate()
+        XCTAssert(result == 8)
+        XCTAssert(description == "8")
+        XCTAssertFalse(isPending)
     }
 
     func testConstant() {
         brain.performOperation("π")
 
-        XCTAssert(brain.result == Double.pi)
-        XCTAssert(brain.description == "π")
-        XCTAssertFalse(brain.resultIsPending)
+        let (result, isPending, description) = brain.evaluate()
+        XCTAssert(result == Double.pi)
+        XCTAssert(description == "π")
+        XCTAssertFalse(isPending)
     }
 
     func testNullaryOperation() {
         brain.performOperation("Rand")
 
-        XCTAssert(brain.result! >= 0)
-        XCTAssert(brain.result! <= 1)
-        XCTAssert(brain.description == "Rand()")
-        XCTAssertFalse(brain.resultIsPending)
+        let (result, isPending, description) = brain.evaluate()
+        XCTAssert(result! >= 0)
+        XCTAssert(result! <= 1)
+        XCTAssert(description == "Rand()")
+        XCTAssertFalse(isPending)
     }
 
     func testUnaryOperation() {
         brain.setOperand(8)
         brain.performOperation("x²")
 
-        XCTAssert(brain.result == 64)
-        XCTAssert(brain.description == "x²(8)")
-        XCTAssertFalse(brain.resultIsPending)
+        let (result, isPending, description) = brain.evaluate()
+        XCTAssert(result == 64)
+        XCTAssert(description == "x²(8)")
+        XCTAssertFalse(isPending)
     }
 
     func testBinaryOperation() {
         brain.setOperand(8)
         brain.performOperation("÷")
 
-        XCTAssertNil(brain.result)
-        XCTAssert(brain.description == "8 ÷")
-        XCTAssert(brain.resultIsPending)
+        var (result, isPending, description) = brain.evaluate()
+        XCTAssertNil(result)
+        XCTAssert(description == "8 ÷")
+        XCTAssert(isPending)
 
         brain.setOperand(4)
 
-        XCTAssert(brain.result == 4)
-        XCTAssert(brain.description == "8 ÷")
-        XCTAssert(brain.resultIsPending)
+        (result, isPending, description) = brain.evaluate()
+        XCTAssert(result == 4)
+        XCTAssert(description == "8 ÷")
+        XCTAssert(isPending)
 
         brain.performOperation("=")
 
-        XCTAssert(brain.result == 2)
-        XCTAssert(brain.description == "8 ÷ 4")
-        XCTAssertFalse(brain.resultIsPending)
+        (result, isPending, description) = brain.evaluate()
+        XCTAssert(result == 2)
+        XCTAssert(description == "8 ÷ 4")
+        XCTAssertFalse(isPending)
     }
 
     func testNullaryDuringBinary() {
@@ -83,17 +90,19 @@ class CalculatorTests: XCTestCase {
         brain.performOperation("+")
         brain.performOperation("Rand")
 
-        XCTAssert(brain.result! >= 0)
-        XCTAssert(brain.result! <= 1)
-        XCTAssert(brain.description == "8 +")
-        XCTAssert(brain.resultIsPending)
+        var (result, isPending, description) = brain.evaluate()
+        XCTAssert(result! >= 0)
+        XCTAssert(result! <= 1)
+        XCTAssert(description == "8 +")
+        XCTAssert(isPending)
 
         brain.performOperation("=")
 
-        XCTAssert(brain.result! >= 8)
-        XCTAssert(brain.result! <= 9)
-        XCTAssert(brain.description == "8 + Rand()")
-        XCTAssertFalse(brain.resultIsPending)
+        (result, isPending, description) = brain.evaluate()
+        XCTAssert(result! >= 8)
+        XCTAssert(result! <= 9)
+        XCTAssert(description == "8 + Rand()")
+        XCTAssertFalse(isPending)
     }
 
     func testMultipleConsecutiveBinary() {
@@ -106,32 +115,33 @@ class CalculatorTests: XCTestCase {
         brain.setOperand(3)
         brain.performOperation("=")
 
-        XCTAssert(brain.result == 360)
-        XCTAssert(brain.description == "6 × 5 × 4 × 3")
-        XCTAssertFalse(brain.resultIsPending)
+        let (result, isPending, description) = brain.evaluate()
+        XCTAssert(result == 360)
+        XCTAssert(description == "6 × 5 × 4 × 3")
+        XCTAssertFalse(isPending)
     }
 
     func testMultipleUnaryDuringSecondBinary() {
         brain.setOperand(8)
         brain.performOperation("-")
-
         brain.setOperand(81)
         brain.performOperation("√")
-        XCTAssert(brain.result == 9)
-        XCTAssert(brain.description == "8 - √(81)")
-        XCTAssert(brain.resultIsPending)
+
+        var (result, isPending, description) = brain.evaluate()
+        XCTAssert(result == 9)
+        XCTAssert(description == "8 - √(81)")
+        XCTAssert(isPending)
 
         brain.performOperation("√")
 
-        XCTAssert(brain.result == 3)
-        XCTAssert(brain.description == "8 - √(√(81))")
-        XCTAssert(brain.resultIsPending)
+        (result, isPending, description) = brain.evaluate()
+        XCTAssert(result == 3)
+        XCTAssert(description == "8 - √(√(81))")
+        XCTAssert(isPending)
     }
 
     func testClear() {
-        let beginningBrainResult = brain.result
-        let beginningBrainDescription = brain.description
-        let beginningBrainResultIsPending = brain.resultIsPending
+        let (beginningBrainResult, beginningBrainResultIsPending, beginningBrainDescription) = brain.evaluate()
 
         brain.setOperand(8)
         brain.performOperation("-")
@@ -141,17 +151,19 @@ class CalculatorTests: XCTestCase {
 
         brain.clear()
 
-        XCTAssert(brain.result == beginningBrainResult)
-        XCTAssert(brain.description == beginningBrainDescription)
-        XCTAssert(brain.resultIsPending == beginningBrainResultIsPending)
+        let (result, isPending, description) = brain.evaluate()
+        XCTAssert(result == beginningBrainResult)
+        XCTAssert(description == beginningBrainDescription)
+        XCTAssert(isPending == beginningBrainResultIsPending)
     }
 
     func testSetVariableOperand() {
         brain.setOperand(variable: "x")
         brain.performOperation("cos")
 
-        XCTAssert(brain.description == "cos(x)")
-        XCTAssert(brain.result == 1)
+        let (result, _, description) = brain.evaluate()
+        XCTAssert(description == "cos(x)")
+        XCTAssert(result == 1)
     }
 
     func testPerformanceExample() {
