@@ -12,7 +12,7 @@ class CalculatorUITests: XCTestCase {
 
     let app = XCUIApplication()
 
-    let labelNames = ["0", " "]
+    let labelNames = ["displayUILabel", "historyUILabel", "memoryValueUILabel"]
 
     let numpadButtonNames = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
     let coreFunctionButtonNames = ["=", "C", "⌫"]
@@ -291,10 +291,22 @@ class CalculatorUITests: XCTestCase {
         XCTAssert(app.staticTexts["8"].exists)
 
         app.buttons["C"].tap()
-        for label in labelNames { XCTAssert(app.staticTexts[label].exists) }
+        XCTAssert(app.staticTexts["0"].exists)
+        XCTAssert(app.staticTexts[" "].exists)
+        XCTAssert(app.staticTexts[""].exists)
 
         app.buttons["8"].tap()
         XCTAssert(app.staticTexts["8"].exists)
+    }
+
+    func testClearMemory() {
+        app.buttons["8"].tap()
+        app.buttons["→M"].tap()
+
+        XCTAssert(app.staticTexts["M=8"].exists)
+
+        app.buttons["C"].tap()
+        XCTAssert(app.staticTexts[""].exists)
     }
 
     func testBackspaceEnterAndDeleteAll() {
@@ -360,11 +372,13 @@ class CalculatorUITests: XCTestCase {
 
         XCTAssert(app.staticTexts["√(9 + M) ="].exists)
         XCTAssert(app.staticTexts["3"].exists)
+        XCTAssert(app.staticTexts[""].exists)
 
         app.buttons["7"].tap()
         app.buttons["→M"].tap()
         XCTAssert(app.staticTexts["√(9 + M) ="].exists)
         XCTAssert(app.staticTexts["4"].exists)
+        XCTAssert(app.staticTexts["M=7"].exists)
 
         app.buttons["+"].tap()
         app.buttons["1"].tap()
@@ -372,5 +386,6 @@ class CalculatorUITests: XCTestCase {
         app.buttons["="].tap()
         XCTAssert(app.staticTexts["√(9 + M) + 14 ="].exists)
         XCTAssert(app.staticTexts["18"].exists)
+        XCTAssert(app.staticTexts["M=7"].exists)
     }
 }

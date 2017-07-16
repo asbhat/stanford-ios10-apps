@@ -24,6 +24,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var display: UILabel!
     @IBOutlet weak var history: UILabel!
+    @IBOutlet weak var mValue: UILabel!
 
     private let displayFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -112,6 +113,16 @@ class ViewController: UIViewController {
             displayValue = result!
         } else if description.isEmpty {
             displayValue = 0
+        }
+        updateMValue()
+    }
+
+    private func updateMValue() {
+        if let m = variables["M"] {
+            displayFormatter.maximumFractionDigits = m.remainder(dividingBy: 1) == 0 ? 0 : DisplayFormat.maximumDecimalPlaces
+            mValue.text = "M=" + displayFormatter.string(from: NSNumber(value: m))!
+        } else {
+            mValue.text = ""
         }
     }
 }
