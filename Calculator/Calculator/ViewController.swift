@@ -39,6 +39,8 @@ class ViewController: UIViewController {
 
     private var userIsInTheMiddleOfTyping = false
 
+    private var variables = [String : Double]()
+
     @IBAction func touchDigit(_ sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTyping {
@@ -71,18 +73,13 @@ class ViewController: UIViewController {
         if let mathematicalSymbol = sender.currentTitle {
             brain.performOperation(mathematicalSymbol)
         }
-        let (brainResult, brainIsPending, brainDescription) = brain.evaluate()
-        if let result = brainResult {
-            displayValue = result
-        }
-        history.text = brainDescription == " " ? " " : brainDescription + (brainIsPending ? " ..." : " =")
+        evaluateAndUpdate()
     }
 
     @IBAction func clear(_ sender: UIButton) {
         brain.clear()
-        let (result, _, description) = brain.evaluate()
-        displayValue = result ?? 0
-        history.text = description
+        variables.removeAll()
+        evaluateAndUpdate()
         userIsInTheMiddleOfTyping = false
     }
 
@@ -94,6 +91,27 @@ class ViewController: UIViewController {
                 display.text = "0"
                 userIsInTheMiddleOfTyping = false
             }
+        }
+    }
+
+    @IBAction func setM(_ sender: UIButton) {
+        variables["M"] = displayValue
+        evaluateAndUpdate()
+        userIsInTheMiddleOfTyping = false
+    }
+
+    @IBAction func useVariable(_ sender: UIButton) {
+        brain.setOperand(variable: sender.currentTitle!)
+        evaluateAndUpdate()
+    }
+
+    private func evaluateAndUpdate() {
+        let (result, isPending, description) = brain.evaluate(using: variables)
+        history.text = description.isEmpty ? " " : description + (isPending ? " ..." : " =")
+        if result != nil {
+            displayValue = result!
+        } else if description.isEmpty {
+            displayValue = 0
         }
     }
 }

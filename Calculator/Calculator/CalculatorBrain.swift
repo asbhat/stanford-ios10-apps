@@ -87,7 +87,7 @@ struct CalculatorBrain {
 
     func evaluate(using variables: [String : Double]? = nil) -> (result: Double?, isPending: Bool, description: String) {
         var result: (value: Double?, text: String?)
-        var description = " "
+        var description = ""
 
         var pendingBinaryOperation: PendingBinaryOperation?
         var isPending: Bool {

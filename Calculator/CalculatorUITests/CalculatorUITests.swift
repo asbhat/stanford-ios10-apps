@@ -16,7 +16,7 @@ class CalculatorUITests: XCTestCase {
 
     let numpadButtonNames = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
     let coreFunctionButtonNames = ["=", "C", "⌫"]
-    let operationButtonNames = ["+", "-", "×", "÷", "±", "√", "∛", "sin", "cos", "%", "x²", "x³", "π", "e", "Rand"]
+    let operationButtonNames = ["+", "-", "×", "÷", "±", "√", "sin", "cos", "%", "x²", "π", "e", "Rand", "→M", "M"]
 
     override func setUp() {
         super.setUp()
@@ -147,7 +147,7 @@ class CalculatorUITests: XCTestCase {
     }
 
 
-    // Required Task #7
+    // Project 1 Required Task #7
 
     func testA() {
         app.buttons["7"].tap()
@@ -347,5 +347,30 @@ class CalculatorUITests: XCTestCase {
         app.buttons["⌫"].tap()
         XCTAssert(app.staticTexts["8 × 9 ="].exists)
         XCTAssert(app.staticTexts["72"].exists)
+    }
+
+    // Project 2 Required Task 7
+
+    func testUseMThenSet() {
+        app.buttons["9"].tap()
+        app.buttons["+"].tap()
+        app.buttons["M"].tap()
+        app.buttons["="].tap()
+        app.buttons["√"].tap()
+
+        XCTAssert(app.staticTexts["√(9 + M) ="].exists)
+        XCTAssert(app.staticTexts["3"].exists)
+
+        app.buttons["7"].tap()
+        app.buttons["→M"].tap()
+        XCTAssert(app.staticTexts["√(9 + M) ="].exists)
+        XCTAssert(app.staticTexts["4"].exists)
+
+        app.buttons["+"].tap()
+        app.buttons["1"].tap()
+        app.buttons["4"].tap()
+        app.buttons["="].tap()
+        XCTAssert(app.staticTexts["√(9 + M) + 14 ="].exists)
+        XCTAssert(app.staticTexts["18"].exists)
     }
 }
