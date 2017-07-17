@@ -186,6 +186,10 @@ struct CalculatorBrain {
     mutating func clear() {
         sequence.removeAll()
     }
+
+    mutating func undo() {
+        if (sequence.count > 0) { sequence.removeLast() }
+    }
 }
 
 private extension String {

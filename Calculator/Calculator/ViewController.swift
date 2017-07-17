@@ -25,6 +25,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var display: UILabel!
     @IBOutlet weak var history: UILabel!
     @IBOutlet weak var mValue: UILabel!
+    @IBOutlet weak var undoBackspace: UIButton!
 
     private let displayFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -38,7 +39,21 @@ class ViewController: UIViewController {
 
     private var brain = CalculatorBrain()
 
-    private var userIsInTheMiddleOfTyping = false
+    private var userIsInTheMiddleOfTyping = false {
+        willSet {
+            if newValue {
+                UIView.performWithoutAnimation {
+                    undoBackspace.setTitle("⌫", for: .normal)
+                    undoBackspace.layoutIfNeeded()
+                }
+            } else {
+                UIView.performWithoutAnimation {
+                    undoBackspace.setTitle("Undo", for: .normal)
+                    undoBackspace.layoutIfNeeded()
+                }
+            }
+        }
+    }
 
     private var variables = [String : Double]()
 
@@ -77,21 +92,28 @@ class ViewController: UIViewController {
         evaluateAndUpdate()
     }
 
-    @IBAction func clear(_ sender: UIButton) {
+    @IBAction func clear() {
         brain.clear()
         variables.removeAll()
         evaluateAndUpdate()
         userIsInTheMiddleOfTyping = false
     }
 
-    @IBAction func backspace(_ sender: UIButton) {
+    private func backspace() {
+        if display.text!.characters.count > 1 {
+            display.text = String(display.text!.characters.dropLast())
+        } else {
+            display.text = "0"
+            userIsInTheMiddleOfTyping = false
+        }
+    }
+
+    @IBAction func undo() {
         if userIsInTheMiddleOfTyping {
-            if display.text!.characters.count > 1 {
-                display.text = String(display.text!.characters.dropLast())
-            } else {
-                display.text = "0"
-                userIsInTheMiddleOfTyping = false
-            }
+            backspace()
+        } else {
+            brain.undo()
+            evaluateAndUpdate()
         }
     }
 

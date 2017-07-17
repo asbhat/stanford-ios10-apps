@@ -15,7 +15,7 @@ class CalculatorUITests: XCTestCase {
     let labelNames = ["displayUILabel", "historyUILabel", "memoryValueUILabel"]
 
     let numpadButtonNames = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
-    let coreFunctionButtonNames = ["=", "C", "⌫"]
+    let coreFunctionButtonNames = ["=", "C", "undoAndBackspaceButton"]
     let operationButtonNames = ["+", "-", "×", "÷", "±", "√", "sin", "cos", "%", "x²", "π", "e", "Rand", "→M", "M"]
 
     override func setUp() {
@@ -310,11 +310,11 @@ class CalculatorUITests: XCTestCase {
     }
 
     func testBackspaceEnterAndDeleteAll() {
-        app.buttons["⌫"].tap()
+        app.buttons["undoAndBackspaceButton"].tap()
         XCTAssert(app.staticTexts[" "].exists)
         XCTAssert(app.staticTexts["0"].exists)
 
-        app.buttons["⌫"].tap()
+        app.buttons["undoAndBackspaceButton"].tap()
         XCTAssert(app.staticTexts[" "].exists)
         XCTAssert(app.staticTexts["0"].exists)
 
@@ -324,27 +324,28 @@ class CalculatorUITests: XCTestCase {
         XCTAssert(app.staticTexts[" "].exists)
         XCTAssert(app.staticTexts["123"].exists)
 
-        app.buttons["⌫"].tap()
+        app.buttons["undoAndBackspaceButton"].tap()
         XCTAssert(app.staticTexts[" "].exists)
         XCTAssert(app.staticTexts["12"].exists)
 
-        app.buttons["⌫"].tap()
+        app.buttons["undoAndBackspaceButton"].tap()
         XCTAssert(app.staticTexts[" "].exists)
         XCTAssert(app.staticTexts["1"].exists)
 
-        app.buttons["⌫"].tap()
+        app.buttons["undoAndBackspaceButton"].tap()
         XCTAssert(app.staticTexts[" "].exists)
         XCTAssert(app.staticTexts["0"].exists)
     }
 
-    func testBackspaceDuringOperations() {
+    func testBackspaceAndUndoDuringOperations() {
         app.buttons["8"].tap()
         app.buttons["×"].tap()
 
-        app.buttons["⌫"].tap()
-        XCTAssert(app.staticTexts["8 × ..."].exists)
+        app.buttons["Undo"].tap()
+        XCTAssert(app.staticTexts["8 ="].exists)
         XCTAssert(app.staticTexts["8"].exists)
 
+        app.buttons["×"].tap()
         app.buttons["9"].tap()
         app.buttons["⌫"].tap()
         XCTAssert(app.staticTexts["8 × ..."].exists)
@@ -356,9 +357,12 @@ class CalculatorUITests: XCTestCase {
 
         app.buttons["9"].tap()
         app.buttons["="].tap()
-        app.buttons["⌫"].tap()
         XCTAssert(app.staticTexts["8 × 9 ="].exists)
         XCTAssert(app.staticTexts["72"].exists)
+
+        app.buttons["Undo"].tap()
+        XCTAssert(app.staticTexts["8 × ..."].exists)
+        XCTAssert(app.staticTexts["9"].exists)
     }
 
     // Project 2 Required Task 7
@@ -387,5 +391,24 @@ class CalculatorUITests: XCTestCase {
         XCTAssert(app.staticTexts["√(9 + M) + 14 ="].exists)
         XCTAssert(app.staticTexts["18"].exists)
         XCTAssert(app.staticTexts["M=7"].exists)
+    }
+
+    // Project 2 Hint 10
+
+    func testUndoWithUnaryMemory() {
+        app.buttons["M"].tap()
+        app.buttons["cos"].tap()
+        XCTAssert(app.staticTexts["cos(M) ="].exists)
+        XCTAssert(app.staticTexts["1"].exists)
+        XCTAssert(app.staticTexts[""].exists)
+
+        app.buttons["π"].tap()
+        app.buttons["→M"].tap()
+        XCTAssert(app.staticTexts["M=3.141593"].exists)
+
+        app.buttons["undoAndBackspaceButton"].tap()
+        XCTAssert(app.staticTexts["cos(M) ="].exists)
+        XCTAssert(app.staticTexts["-1"].exists)
+        XCTAssert(app.staticTexts["M=3.141593"].exists)
     }
 }
