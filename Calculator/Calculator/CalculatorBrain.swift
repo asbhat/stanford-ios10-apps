@@ -30,7 +30,9 @@ struct CalculatorBrain {
         case constant(Double)
         case nullaryOperation(() -> Double)
         case unaryOperation((Double) -> Double)
+        case unaryOperationWithCheck(((Double) -> String?), ((Double) -> Double))
         case binaryOperation((Double, Double) -> Double)
+        case binaryOperationWithCheck(((Double) -> String?), ((Double, Double) -> Double))
         case equals
     }
 
@@ -57,7 +59,7 @@ struct CalculatorBrain {
         "π"     :   Operation.constant(Double.pi),
         "e"     :   Operation.constant(M_E),
         "Rand"  :   Operation.nullaryOperation({ Double(arc4random()) / Double(UINT32_MAX) }),
-        "√"     :   Operation.unaryOperation(sqrt),
+        "√"     :   Operation.unaryOperationWithCheck({ ErrorChecks.forNegativeRoot(of: $0) }, sqrt),
         "∛"     :   Operation.unaryOperation({ pow($0, 1.0/3.0) }),
         "sin"   :   Operation.unaryOperation(sin),
         "cos"   :   Operation.unaryOperation(cos),
@@ -66,7 +68,7 @@ struct CalculatorBrain {
         "x²"    :   Operation.unaryOperation({ pow($0, 2) }),
         "x³"    :   Operation.unaryOperation({ pow($0, 3) }),
         "×"     :   Operation.binaryOperation({ $0 * $1 }),
-        "÷"     :   Operation.binaryOperation({ $0 / $1 }),
+        "÷"     :   Operation.binaryOperationWithCheck({ ErrorChecks.forDivideByZero(with: $0) }, { $0 / $1 }),
         "+"     :   Operation.binaryOperation({ $0 + $1 }),
         "-"     :   Operation.binaryOperation({ $0 - $1 }),
         "="     :   Operation.equals
@@ -85,9 +87,10 @@ struct CalculatorBrain {
         sequence.append(.variable(named))
     }
 
-    func evaluate(using variables: [String : Double]? = nil) -> (result: Double?, isPending: Bool, description: String) {
+    func evaluate(using variables: [String : Double]? = nil) -> (result: Double?, isPending: Bool, description: String, errorMessage: String?) {
         var result: (value: Double?, text: String?)
         var description = ""
+        var errorMessage: String?
 
         var pendingBinaryOperation: PendingBinaryOperation?
         var isPending: Bool {
@@ -117,30 +120,44 @@ struct CalculatorBrain {
                 case .nullaryOperation(let function):
                     result = (function(), "\(symbol)()")
                     if (!isPending) { description = result.text! }
+                case .unaryOperationWithCheck(let check, let function):
+                    errorMessage = check(result.value!)
+                    evaluate(unary: function, having: symbol)
                 case .unaryOperation(let function):
-                    if let oldResult = result.value {
-                        let oldText = result.text!
-                        result = (function(oldResult), "\(symbol)(\(oldText))")
-                        if (!isPending) {
-                            description = result.text!
-                        } else {
-                            if description.hasSuffix(oldText) {
-                                description = description.replace(ending: oldText, with: result.text!)!
-                            } else {
-                                description += " \(result.text!)"
-                            }
-                        }
-                    }
+                    evaluate(unary: function, having: symbol)
+                case .binaryOperationWithCheck(let check, let function):
+                    evaluate(binary: function, having: symbol)
+                    pendingBinaryOperation?.check = check
                 case .binaryOperation(let function):
-                    if result.value != nil {
-                        evaluatePendingBinaryOperation()
-                        description = "\(result.text!) \(symbol)"
-                        pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: result.value!)
-                        result = (nil, nil)
-                    }
+                    evaluate(binary: function, having: symbol)
                 case .equals:
                     evaluatePendingBinaryOperation()
                 }
+            }
+        }
+
+        func evaluate(unary function: ((Double) -> Double), having symbol: String) {
+            if let oldResult = result.value {
+                let oldText = result.text!
+                result = (function(oldResult), "\(symbol)(\(oldText))")
+                if (!isPending) {
+                    description = result.text!
+                } else {
+                    if description.hasSuffix(oldText) {
+                        description = description.replace(ending: oldText, with: result.text!)!
+                    } else {
+                        description += " \(result.text!)"
+                    }
+                }
+            }
+        }
+
+        func evaluate(binary function: @escaping ((Double, Double) -> Double), having symbol: String) {
+            if result.value != nil {
+                evaluatePendingBinaryOperation()
+                description = "\(result.text!) \(symbol)"
+                pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: result.value!, check: nil)
+                result = (nil, nil)
             }
         }
 
@@ -148,6 +165,9 @@ struct CalculatorBrain {
             if pendingBinaryOperation != nil && result.value != nil {
                 if !description.hasSuffix(" \(result.text!)") {
                     description += " \(result.text!)"
+                }
+                if let checkFunction = pendingBinaryOperation!.check {
+                    errorMessage = checkFunction(result.value!)
                 }
                 result = (pendingBinaryOperation!.evaluate(with: result.value!), description)
                 pendingBinaryOperation = nil
@@ -157,6 +177,7 @@ struct CalculatorBrain {
         struct PendingBinaryOperation {
             let function: (Double, Double) -> Double
             let firstOperand: Double
+            var check: ((Double) -> String?)?
 
             func evaluate(with secondOperand: Double) -> Double {
                 return function(firstOperand, secondOperand)
@@ -165,7 +186,7 @@ struct CalculatorBrain {
 
         evaluate(sequence)
 
-        return (result.value, isPending, description)
+        return (result.value, isPending, description, errorMessage)
     }
 
     @available(*, deprecated, message: "Please use evaluate().result going forward")
@@ -189,6 +210,22 @@ struct CalculatorBrain {
 
     mutating func undo() {
         if (sequence.count > 0) { sequence.removeLast() }
+    }
+}
+
+private struct ErrorChecks {
+    static func forNegativeRoot(of operand: Double) -> String? {
+        guard operand < 0 else {
+            return nil
+        }
+        return "Error! root of \(String(operand)) is not \'real\'"
+    }
+
+    static func forDivideByZero(with divisor: Double) -> String? {
+        guard divisor == 0 else {
+            return nil
+        }
+        return "Error! cannot divide by zero"
     }
 }
 

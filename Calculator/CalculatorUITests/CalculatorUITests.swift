@@ -411,4 +411,25 @@ class CalculatorUITests: XCTestCase {
         XCTAssert(app.staticTexts["-1"].exists)
         XCTAssert(app.staticTexts["M=3.141593"].exists)
     }
+
+    func testSqrtOfNegativeNumber() {
+        app.buttons["1"].tap()
+        app.buttons["-"].tap()
+        app.buttons["2"].tap()
+        app.buttons["="].tap()
+        app.buttons["√"].tap()
+
+        XCTAssert(app.staticTexts["√(1 - 2) ="].exists)
+        XCTAssert(app.staticTexts["Error! root of -1.0 is not \'real\'"].exists)
+    }
+
+    func testDivideByZero() {
+        app.buttons["8"].tap()
+        app.buttons["÷"].tap()
+        app.buttons["0"].tap()
+        app.buttons["="].tap()
+
+        XCTAssert(app.staticTexts["8 ÷ 0 ="].exists)
+        XCTAssert(app.staticTexts["Error! cannot divide by zero"].exists)
+    }
 }

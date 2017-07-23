@@ -26,7 +26,7 @@ class CalculatorTests: XCTestCase {
     func testSetOperand() {
         brain.setOperand(8)
 
-        let (result, isPending, description) = brain.evaluate()
+        let (result, isPending, description, _) = brain.evaluate()
         XCTAssert(result == 8)
         XCTAssert(description == "8")
         XCTAssertFalse(isPending)
@@ -35,7 +35,7 @@ class CalculatorTests: XCTestCase {
     func testConstant() {
         brain.performOperation("π")
 
-        let (result, isPending, description) = brain.evaluate()
+        let (result, isPending, description, _) = brain.evaluate()
         XCTAssert(result == Double.pi)
         XCTAssert(description == "π")
         XCTAssertFalse(isPending)
@@ -44,7 +44,7 @@ class CalculatorTests: XCTestCase {
     func testNullaryOperation() {
         brain.performOperation("Rand")
 
-        let (result, isPending, description) = brain.evaluate()
+        let (result, isPending, description, _) = brain.evaluate()
         XCTAssert(result! >= 0)
         XCTAssert(result! <= 1)
         XCTAssert(description == "Rand()")
@@ -55,7 +55,7 @@ class CalculatorTests: XCTestCase {
         brain.setOperand(8)
         brain.performOperation("x²")
 
-        let (result, isPending, description) = brain.evaluate()
+        let (result, isPending, description, _) = brain.evaluate()
         XCTAssert(result == 64)
         XCTAssert(description == "x²(8)")
         XCTAssertFalse(isPending)
@@ -65,21 +65,21 @@ class CalculatorTests: XCTestCase {
         brain.setOperand(8)
         brain.performOperation("÷")
 
-        var (result, isPending, description) = brain.evaluate()
+        var (result, isPending, description, _) = brain.evaluate()
         XCTAssertNil(result)
         XCTAssert(description == "8 ÷")
         XCTAssert(isPending)
 
         brain.setOperand(4)
 
-        (result, isPending, description) = brain.evaluate()
+        (result, isPending, description, _) = brain.evaluate()
         XCTAssert(result == 4)
         XCTAssert(description == "8 ÷")
         XCTAssert(isPending)
 
         brain.performOperation("=")
 
-        (result, isPending, description) = brain.evaluate()
+        (result, isPending, description, _) = brain.evaluate()
         XCTAssert(result == 2)
         XCTAssert(description == "8 ÷ 4")
         XCTAssertFalse(isPending)
@@ -90,7 +90,7 @@ class CalculatorTests: XCTestCase {
         brain.performOperation("+")
         brain.performOperation("Rand")
 
-        var (result, isPending, description) = brain.evaluate()
+        var (result, isPending, description, _) = brain.evaluate()
         XCTAssert(result! >= 0)
         XCTAssert(result! <= 1)
         XCTAssert(description == "8 +")
@@ -98,7 +98,7 @@ class CalculatorTests: XCTestCase {
 
         brain.performOperation("=")
 
-        (result, isPending, description) = brain.evaluate()
+        (result, isPending, description, _) = brain.evaluate()
         XCTAssert(result! >= 8)
         XCTAssert(result! <= 9)
         XCTAssert(description == "8 + Rand()")
@@ -115,7 +115,7 @@ class CalculatorTests: XCTestCase {
         brain.setOperand(3)
         brain.performOperation("=")
 
-        let (result, isPending, description) = brain.evaluate()
+        let (result, isPending, description, _) = brain.evaluate()
         XCTAssert(result == 360)
         XCTAssert(description == "6 × 5 × 4 × 3")
         XCTAssertFalse(isPending)
@@ -127,21 +127,21 @@ class CalculatorTests: XCTestCase {
         brain.setOperand(81)
         brain.performOperation("√")
 
-        var (result, isPending, description) = brain.evaluate()
+        var (result, isPending, description, _) = brain.evaluate()
         XCTAssert(result == 9)
         XCTAssert(description == "8 - √(81)")
         XCTAssert(isPending)
 
         brain.performOperation("√")
 
-        (result, isPending, description) = brain.evaluate()
+        (result, isPending, description, _) = brain.evaluate()
         XCTAssert(result == 3)
         XCTAssert(description == "8 - √(√(81))")
         XCTAssert(isPending)
     }
 
     func testClear() {
-        let (beginningBrainResult, beginningBrainResultIsPending, beginningBrainDescription) = brain.evaluate()
+        let (beginningBrainResult, beginningBrainResultIsPending, beginningBrainDescription, _) = brain.evaluate()
 
         brain.setOperand(8)
         brain.performOperation("-")
@@ -151,7 +151,7 @@ class CalculatorTests: XCTestCase {
 
         brain.clear()
 
-        let (result, isPending, description) = brain.evaluate()
+        let (result, isPending, description, _) = brain.evaluate()
         XCTAssert(result == beginningBrainResult)
         XCTAssert(description == beginningBrainDescription)
         XCTAssert(isPending == beginningBrainResultIsPending)
@@ -161,9 +161,34 @@ class CalculatorTests: XCTestCase {
         brain.setOperand(variable: "x")
         brain.performOperation("cos")
 
-        let (result, _, description) = brain.evaluate()
+        let (result, _, description, _) = brain.evaluate()
         XCTAssert(description == "cos(x)")
         XCTAssert(result == 1)
+    }
+
+    func testImaginaryResult() {
+        brain.setOperand(1)
+        brain.performOperation("±")
+        brain.performOperation("√")
+
+        let (result, isPending, description, errorMessage) = brain.evaluate()
+        XCTAssert(result!.isNaN)
+        XCTAssert(description == "√(±(1))")
+        XCTAssertFalse(isPending)
+        XCTAssert(errorMessage == "Error! root of -1.0 is not \'real\'")
+    }
+
+    func testInfResult() {
+        brain.setOperand(1)
+        brain.performOperation("÷")
+        brain.setOperand(0)
+        brain.performOperation("=")
+
+        let (result, isPending, description, errorMessage) = brain.evaluate()
+        XCTAssert(result!.isInfinite)
+        XCTAssert(description == "1 ÷ 0")
+        XCTAssertFalse(isPending)
+        XCTAssert(errorMessage == "Error! cannot divide by zero")
     }
 
     func testPerformanceExample() {

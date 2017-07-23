@@ -129,12 +129,15 @@ class ViewController: UIViewController {
     }
 
     private func evaluateAndUpdate() {
-        let (result, isPending, description) = brain.evaluate(using: variables)
-        history.text = description.isEmpty ? " " : description + (isPending ? " ..." : " =")
-        if result != nil {
-            displayValue = result!
-        } else if description.isEmpty {
+        let evaluation = brain.evaluate(using: variables)
+        history.text = evaluation.description.isEmpty ? " " : evaluation.description + (evaluation.isPending ? " ..." : " =")
+        if evaluation.result != nil {
+            displayValue = evaluation.result!
+        } else if evaluation.description.isEmpty {
             displayValue = 0
+        }
+        if evaluation.errorMessage != nil {
+            display.text = evaluation.errorMessage
         }
         updateMValue()
     }
