@@ -12,22 +12,32 @@ import UIKit
 class FaceView: UIView {
 
     @IBInspectable  // can see variables in the attributes inspector tab
-    var scale: CGFloat = 0.9
+    var scale: CGFloat = 0.9 { didSet { setNeedsDisplay() } }  // do NOT call draw() directly, always use this instead
 
     @IBInspectable
-    var lineWidth: CGFloat = 5.0
+    var lineWidth: CGFloat = 5.0 { didSet { setNeedsDisplay() } }
 
     @IBInspectable
-    var lineColor: UIColor = UIColor.black
+    var lineColor: UIColor = UIColor.black { didSet { setNeedsDisplay() } }
 
     @IBInspectable
-    var fillColor: UIColor = UIColor.yellow
+    var fillColor: UIColor = UIColor.yellow { didSet { setNeedsDisplay() } }
 
     @IBInspectable
-    var eyesOpen: Bool = true
+    var eyesOpen: Bool = true { didSet { setNeedsDisplay() } }
 
     @IBInspectable
     var mouthCurvature: Double = -0.5  // 1.0 is full smile and -1.0 is full frown
+
+    func changeScale(byReactingTo pinchRecognizer: UIPinchGestureRecognizer) {
+        switch pinchRecognizer.state {
+        case .changed, .ended:
+            scale *= pinchRecognizer.scale
+            pinchRecognizer.scale = 1  // only want to update based on incremental changes
+        default:
+            break
+        }
+    }
 
     private var headRadius: CGFloat {
         return min(bounds.size.height, bounds.size.width) / 2 * scale

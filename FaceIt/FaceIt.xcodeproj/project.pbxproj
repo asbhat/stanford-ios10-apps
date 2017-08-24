@@ -15,6 +15,7 @@
 		4824F6C81F11553F00A0A87A /* FaceItTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4824F6C71F11553F00A0A87A /* FaceItTests.swift */; };
 		4824F6D31F11554000A0A87A /* FaceItUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4824F6D21F11554000A0A87A /* FaceItUITests.swift */; };
 		4824F6E21F1155FD00A0A87A /* FaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4824F6E11F1155FD00A0A87A /* FaceView.swift */; };
+		484B10D71F4CD341008B8ACA /* FacialExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B10D61F4CD341008B8ACA /* FacialExpression.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		4824F6D21F11554000A0A87A /* FaceItUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceItUITests.swift; sourceTree = "<group>"; };
 		4824F6D41F11554000A0A87A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4824F6E11F1155FD00A0A87A /* FaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceView.swift; sourceTree = "<group>"; };
+		484B10D61F4CD341008B8ACA /* FacialExpression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacialExpression.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				4824F6B41F11553F00A0A87A /* ViewController.swift */,
 				4824F6E11F1155FD00A0A87A /* FaceView.swift */,
 				4824F6B61F11553F00A0A87A /* Main.storyboard */,
+				484B10D61F4CD341008B8ACA /* FacialExpression.swift */,
 				4824F6E01F11555400A0A87A /* Supporting Files */,
 			);
 			path = FaceIt;
@@ -274,6 +277,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4824F6B51F11553F00A0A87A /* ViewController.swift in Sources */,
+				484B10D71F4CD341008B8ACA /* FacialExpression.swift in Sources */,
 				4824F6B31F11553F00A0A87A /* AppDelegate.swift in Sources */,
 				4824F6E21F1155FD00A0A87A /* FaceView.swift in Sources */,
 			);
@@ -528,6 +532,7 @@
 				4824F6D91F11554000A0A87A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4824F6DA1F11554000A0A87A /* Build configuration list for PBXNativeTarget "FaceItTests" */ = {
 			isa = XCConfigurationList;
@@ -536,6 +541,7 @@
 				4824F6DC1F11554000A0A87A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4824F6DD1F11554000A0A87A /* Build configuration list for PBXNativeTarget "FaceItUITests" */ = {
 			isa = XCConfigurationList;
@@ -544,6 +550,7 @@
 				4824F6DF1F11554000A0A87A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
