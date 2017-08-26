@@ -88,7 +88,7 @@ struct CalculatorBrain {
     }
 
     func evaluate(using variables: [String : Double]? = nil) -> (result: Double?, isPending: Bool, description: String, errorMessage: String?) {
-        var result: (value: Double?, text: String?)
+        var result: (value: Double?, text: String?) = (0, "0")
         var description = ""
         var errorMessage: String?
 
@@ -121,7 +121,9 @@ struct CalculatorBrain {
                     result = (function(), "\(symbol)()")
                     if (!isPending) { description = result.text! }
                 case .unaryOperationWithCheck(let check, let function):
-                    errorMessage = check(result.value!)
+                    if let value = result.value {
+                        errorMessage = check(value)
+                    }
                     evaluate(unary: function, having: symbol)
                 case .unaryOperation(let function):
                     evaluate(unary: function, having: symbol)

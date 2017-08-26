@@ -13,6 +13,9 @@ class CalculatorTests: XCTestCase {
 
     var brain = CalculatorBrain()
 
+    let unaryOperationsToTest = ["√", "∛", "sin", "cos", "±", "%", "x²", "x³"]
+    let binaryOperationsToTest = ["×", "÷", "+", "-"]
+
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -189,6 +192,46 @@ class CalculatorTests: XCTestCase {
         XCTAssert(description == "1 ÷ 0")
         XCTAssertFalse(isPending)
         XCTAssert(errorMessage == "Error! cannot divide by zero")
+    }
+
+    func testUnaryOperationsNoOperand() {
+        var result: Double?
+        var isPending: Bool
+        var description: String
+        var errorMessage: String?
+
+
+        for unarySymbol in unaryOperationsToTest {
+            brain.performOperation(unarySymbol)
+
+            (result, isPending, description, errorMessage) = brain.evaluate()
+            XCTAssert(result!.isFinite)
+            XCTAssert(description == "\(unarySymbol)(0)")
+            XCTAssertFalse(isPending)
+            XCTAssertNil(errorMessage)
+
+            brain.clear()
+        }
+    }
+
+    func testBinaryOperationsNoOperand() {
+        var result: Double?
+        var isPending: Bool
+        var description: String
+        var errorMessage: String?
+
+        for binarySymbol in binaryOperationsToTest {
+            brain.performOperation(binarySymbol)
+
+            (result, isPending, description, errorMessage) = brain.evaluate()
+            XCTAssertNil(result)
+            XCTAssert(description == "0 \(binarySymbol)")
+            XCTAssert(isPending)
+            XCTAssertNil(errorMessage)
+
+            brain.clear()
+        }
+
     }
 
     func testPerformanceExample() {
