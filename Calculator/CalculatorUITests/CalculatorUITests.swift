@@ -70,15 +70,15 @@ class CalculatorUITests: XCTestCase {
     }
 
     func testLabelReadable() {
-        XCUIDevice.shared().orientation = .landscapeLeft
+        XCUIDevice.shared.orientation = .landscapeLeft
         sleep(2)
         XCTAssert(app.staticTexts["0"].frame.height >= 48)
 
-        XCUIDevice.shared().orientation = .landscapeRight
+        XCUIDevice.shared.orientation = .landscapeRight
         sleep(2)
         XCTAssert(app.staticTexts["0"].frame.height >= 48)
 
-        XCUIDevice.shared().orientation = .portrait
+        XCUIDevice.shared.orientation = .portrait
         sleep(2)
         XCTAssert(app.staticTexts["0"].frame.height >= 48)
     }
@@ -109,15 +109,15 @@ class CalculatorUITests: XCTestCase {
 
         labelsExist(labelNames)
 
-        XCUIDevice.shared().orientation = .landscapeLeft
+        XCUIDevice.shared.orientation = .landscapeLeft
         sleep(2)
         labelsOnScreen(labelNames)
 
-        XCUIDevice.shared().orientation = .landscapeRight
+        XCUIDevice.shared.orientation = .landscapeRight
         sleep(2)
         labelsOnScreen(labelNames)
 
-        XCUIDevice.shared().orientation = .portrait
+        XCUIDevice.shared.orientation = .portrait
         sleep(2)
         labelsOnScreen(labelNames)
     }
@@ -127,19 +127,19 @@ class CalculatorUITests: XCTestCase {
         buttonsExist(coreFunctionButtonNames)
         buttonsExist(operationButtonNames)
 
-        XCUIDevice.shared().orientation = .landscapeLeft
+        XCUIDevice.shared.orientation = .landscapeLeft
         sleep(2)
         buttonsOnScreen(numpadButtonNames)
         buttonsOnScreen(coreFunctionButtonNames)
         buttonsOnScreen(operationButtonNames)
 
-        XCUIDevice.shared().orientation = .landscapeRight
+        XCUIDevice.shared.orientation = .landscapeRight
         sleep(2)
         buttonsOnScreen(numpadButtonNames)
         buttonsOnScreen(coreFunctionButtonNames)
         buttonsOnScreen(operationButtonNames)
 
-        XCUIDevice.shared().orientation = .portrait
+        XCUIDevice.shared.orientation = .portrait
         sleep(2)
         buttonsOnScreen(numpadButtonNames)
         buttonsOnScreen(coreFunctionButtonNames)
@@ -293,7 +293,7 @@ class CalculatorUITests: XCTestCase {
         app.buttons["C"].tap()
         XCTAssert(app.staticTexts["0"].exists)
         XCTAssert(app.staticTexts[" "].exists)
-        XCTAssert(app.staticTexts[""].exists)
+        XCTAssert(app.staticTexts["memoryValueUILabel"].label == "")  // is not 'hittable' so need to do this
 
         app.buttons["8"].tap()
         XCTAssert(app.staticTexts["8"].exists)
@@ -306,7 +306,7 @@ class CalculatorUITests: XCTestCase {
         XCTAssert(app.staticTexts["M=8"].exists)
 
         app.buttons["C"].tap()
-        XCTAssert(app.staticTexts[""].exists)
+        XCTAssert(app.staticTexts["memoryValueUILabel"].label == "")
     }
 
     func testBackspaceEnterAndDeleteAll() {
@@ -376,7 +376,7 @@ class CalculatorUITests: XCTestCase {
 
         XCTAssert(app.staticTexts["√(9 + M) ="].exists)
         XCTAssert(app.staticTexts["3"].exists)
-        XCTAssert(app.staticTexts[""].exists)
+        XCTAssert(app.staticTexts["memoryValueUILabel"].label == "")
 
         app.buttons["7"].tap()
         app.buttons["→M"].tap()
@@ -400,7 +400,7 @@ class CalculatorUITests: XCTestCase {
         app.buttons["cos"].tap()
         XCTAssert(app.staticTexts["cos(M) ="].exists)
         XCTAssert(app.staticTexts["1"].exists)
-        XCTAssert(app.staticTexts[""].exists)
+        XCTAssert(app.staticTexts["memoryValueUILabel"].label == "")
 
         app.buttons["π"].tap()
         app.buttons["→M"].tap()
