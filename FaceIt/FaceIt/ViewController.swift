@@ -30,10 +30,13 @@ class ViewController: UIViewController {
             swipeUpRecognizer.direction = .up
             let swipeDownRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(decreaseHappiness))
             swipeDownRecognizer.direction = .down
+            // tapRecognizer.require(toFail: doubleTapRecognizer)  // BLARG makes the eyes 'lag'
+            let tapPanRecognizer = UITapThenPanGestureRecognizer(target: faceView, action: #selector(FaceView.zoom(byReactingTo:)))
             faceView.addGestureRecognizer(pinchRecognizer)
             faceView.addGestureRecognizer(tapRecognizer)
             faceView.addGestureRecognizer(swipeUpRecognizer)
             faceView.addGestureRecognizer(swipeDownRecognizer)
+            faceView.addGestureRecognizer(tapPanRecognizer)
             updateUI()
         }
     }

@@ -39,6 +39,17 @@ class FaceView: UIView {
         }
     }
 
+    @objc func zoom(byReactingTo tapPanRecoginizer: UITapThenPanGestureRecognizer) {
+        switch  tapPanRecoginizer.state {
+        case .changed, .ended:
+            let translation = tapPanRecoginizer.translation(in: self)
+            scale *= (1 + translation.x / 100.0 + translation.y / 100.0)
+            tapPanRecoginizer.setTranslation(CGPoint.zero, in: self)
+        default:
+            break
+        }
+    }
+
     private var headRadius: CGFloat {
         return min(bounds.size.height, bounds.size.width) / 2 * scale
     }
