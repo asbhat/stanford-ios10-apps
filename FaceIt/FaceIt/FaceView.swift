@@ -29,7 +29,7 @@ class FaceView: UIView {
     @IBInspectable
     var mouthCurvature: Double = -0.5  // 1.0 is full smile and -1.0 is full frown
 
-    func changeScale(byReactingTo pinchRecognizer: UIPinchGestureRecognizer) {
+    @objc func changeScale(byReactingTo pinchRecognizer: UIPinchGestureRecognizer) {
         switch pinchRecognizer.state {
         case .changed, .ended:
             scale *= pinchRecognizer.scale
