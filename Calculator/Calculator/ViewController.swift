@@ -100,8 +100,8 @@ class ViewController: UIViewController {
     }
 
     private func backspace() {
-        if display.text!.characters.count > 1 {
-            display.text = String(display.text!.characters.dropLast())
+        if display.text!.count > 1 {
+            display.text = String(display.text!.dropLast())
         } else {
             display.text = "0"
             userIsInTheMiddleOfTyping = false

@@ -236,6 +236,6 @@ private extension String {
         guard self.hasSuffix(ending) else {
             return nil
         }
-        return String(self.characters.dropLast(ending.characters.count)) + replacement
+        return String(self.dropLast(ending.count)) + replacement
     }
 }
