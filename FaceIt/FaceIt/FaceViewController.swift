@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  FaceViewController.swift
 //  FaceIt
 //
 //  Created by Aditya Bhat on 7/8/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class FaceViewController: VCLLoggingViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
