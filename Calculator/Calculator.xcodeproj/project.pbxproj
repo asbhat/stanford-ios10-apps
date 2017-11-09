@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		481B9DB51EE653550050242B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481B9DB41EE653550050242B /* AppDelegate.swift */; };
-		481B9DB71EE653550050242B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481B9DB61EE653550050242B /* ViewController.swift */; };
+		481B9DB71EE653550050242B /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481B9DB61EE653550050242B /* CalculatorViewController.swift */; };
 		481B9DBA1EE653550050242B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 481B9DB81EE653550050242B /* Main.storyboard */; };
 		481B9DBC1EE653550050242B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 481B9DBB1EE653550050242B /* Assets.xcassets */; };
 		481B9DBF1EE653550050242B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 481B9DBD1EE653550050242B /* LaunchScreen.storyboard */; };
@@ -38,7 +38,7 @@
 /* Begin PBXFileReference section */
 		481B9DB11EE653550050242B /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		481B9DB41EE653550050242B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		481B9DB61EE653550050242B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		481B9DB61EE653550050242B /* CalculatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewController.swift; sourceTree = "<group>"; };
 		481B9DB91EE653550050242B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		481B9DBB1EE653550050242B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		481B9DBE1EE653550050242B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -100,7 +100,7 @@
 		481B9DB31EE653550050242B /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
-				481B9DB61EE653550050242B /* ViewController.swift */,
+				481B9DB61EE653550050242B /* CalculatorViewController.swift */,
 				481B9DB81EE653550050242B /* Main.storyboard */,
 				4890D05B1EE70F43000D3B58 /* CalculatorBrain.swift */,
 				481B9DE21EE654510050242B /* Supporting Files */,
@@ -278,7 +278,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4890D05C1EE70F43000D3B58 /* CalculatorBrain.swift in Sources */,
-				481B9DB71EE653550050242B /* ViewController.swift in Sources */,
+				481B9DB71EE653550050242B /* CalculatorViewController.swift in Sources */,
 				481B9DB51EE653550050242B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -365,7 +365,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 30;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -424,7 +424,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 30;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
