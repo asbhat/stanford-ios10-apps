@@ -470,5 +470,38 @@
             </objects>
             <point key="canvasLocation" x="135" y="137.5"/>
         </scene>
+        <!--Graphing View Controller-->
+        <scene sceneID="COE-VB-qRr">
+            <objects>
+                <viewController id="HzD-nV-Fig" customClass="GraphingViewController" customModule="Calculator" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9EJ-LM-gam"/>
+                        <viewControllerLayoutGuide type="bottom" id="bTq-vF-VJS"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="qYT-NE-JrH">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="whN-Mm-Bc4" customClass="GraphingView" customModule="Calculator" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" red="0.12939286229999999" green="0.12942266459999999" blue="0.12939092520000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="whN-Mm-Bc4" secondAttribute="trailing" id="0Ib-AX-6iP"/>
+                            <constraint firstItem="whN-Mm-Bc4" firstAttribute="bottom" secondItem="bTq-vF-VJS" secondAttribute="top" id="bLj-QQ-M3O"/>
+                            <constraint firstItem="whN-Mm-Bc4" firstAttribute="leading" secondItem="qYT-NE-JrH" secondAttribute="leading" id="hKB-va-tJU"/>
+                            <constraint firstItem="whN-Mm-Bc4" firstAttribute="top" secondItem="qYT-NE-JrH" secondAttribute="top" id="ks4-el-tCP"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="graphingView" destination="whN-Mm-Bc4" id="zNe-ag-k4q"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NP6-Nv-ete" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="964" y="137"/>
+        </scene>
     </scenes>
 </document>
