@@ -22,6 +22,10 @@ import UIKit
 
 class GraphingViewController: UIViewController {
 
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

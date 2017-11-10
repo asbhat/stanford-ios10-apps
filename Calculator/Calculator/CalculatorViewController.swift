@@ -27,6 +27,13 @@ class CalculatorViewController: UIViewController {
     @IBOutlet weak var mValue: UILabel!
     @IBOutlet weak var undoBackspace: UIButton!
 
+    override var prefersStatusBarHidden: Bool {
+        return false
+    }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     private let displayFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.minimumIntegerDigits = 1
