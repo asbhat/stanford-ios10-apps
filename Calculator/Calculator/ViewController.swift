@@ -55,6 +55,16 @@ class ViewController: UIViewController {
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        brain.addUnaryOperation(named: "✅") { [weak weakSelf = self] in
+            // need a 'weak' or 'unowned' reference to prevent a Memory Cycle
+            //      (two strong reference types pointed at each other, both preventing the other from ever being released)
+            weakSelf?.display.textColor = UIColor.green
+            return sqrt($0)
+        }
+    }
+
     private var variables = [String : Double]()
 
     @IBAction func touchDigit(_ sender: UIButton) {
