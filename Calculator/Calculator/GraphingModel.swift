@@ -25,6 +25,10 @@ struct GraphingModel: CustomStringConvertible {
     var description: String = "cos(x)"  // temp default value
     var equation: ((Double) -> Double)? = cos  // temp default value
 
+    /**
+     returns the y cartesian coordinate from the x
+     - parameter x: x cartesian coordinate
+    */
     func calculateY(from x: Double) -> Double? {
         return equation?(x)
     }

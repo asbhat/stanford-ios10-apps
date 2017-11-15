@@ -37,15 +37,27 @@ class GraphingViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    private var graphingModel = GraphingModel() {
+        didSet {
+            updateGraphFunc()
+        }
+    }
+    // var graphingModel: (equation: ((Double) -> Double)?, description: String?)
+
     @IBOutlet weak var graphingView: GraphingView! {
         didSet {
-            // TODO
+            updateGraphFunc()
         }
     }
 
-    var graphingModel = GraphingModel()
-    // var graphingModel: (equation: ((Double) -> Double)?, description: String?)
-
+    private func updateGraphFunc() {
+        graphingView?.function = { [weak weakSelf = self] (x) -> CGFloat in
+            if let f = weakSelf?.graphingModel.equation {
+                return CGFloat(f(Double(x)))
+            }
+            return CGFloat()
+        }
+    }
 
     /*
     // MARK: - Navigation

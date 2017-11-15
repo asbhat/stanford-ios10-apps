@@ -22,12 +22,69 @@ import UIKit
 
 class GraphingView: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
+    var origin: CGPoint! { didSet { setNeedsDisplay() } }
 
+    var scale: CGFloat = 50.0 { didSet { setNeedsDisplay() } }
+
+    var lineColor: UIColor = UIColor.blue { didSet { setNeedsDisplay() } }
+    var lineWidth: CGFloat = 5.0 { didSet { setNeedsDisplay() } }
+
+    var function: ((CGFloat) -> CGFloat)! { didSet { setNeedsDisplay() } }
+
+    private var axes = AxesDrawer(color: UIColor.white)
+
+    override func draw(_ rect: CGRect) {
+        origin = origin ?? CGPoint(x: bounds.midX, y: bounds.midY)
+        axes.contentScaleFactor = contentScaleFactor
+        axes.drawAxes(in: rect, origin: origin, pointsPerUnit: scale)
+        drawGraph(in: rect, origin: origin, pointsPerUnit: scale)
+    }
+
+    private func drawGraph(in rect: CGRect, origin: CGPoint, pointsPerUnit: CGFloat) {
+        guard function != nil else {
+            return
+        }
+
+        let minPixelX = Int(rect.minX * contentScaleFactor)
+        let maxPixelX = Int(rect.maxX * contentScaleFactor)
+        let graphPath = UIBezierPath()
+        var graphPoint = CGPoint()
+        var cartesianPoint = CGPoint()
+        var continuousGraph = false
+
+        for pixelX in minPixelX...maxPixelX {
+            graphPoint.x = CGFloat(pixelX) / contentScaleFactor
+            cartesianPoint = graphPoint.toCartesianFromPoint(origin: origin, scale: scale)
+            cartesianPoint.y = function(cartesianPoint.x)
+            guard cartesianPoint.y.isNormal || cartesianPoint.y.isZero else {
+                continuousGraph = false
+                continue
+            }
+            graphPoint = cartesianPoint.toPointFromCartesian(origin: origin, scale: scale)
+            guard rect.contains(graphPoint) else {
+                continuousGraph = false
+                continue
+            }
+            if continuousGraph {
+                graphPath.addLine(to: graphPoint)
+            } else {
+                graphPath.move(to: graphPoint)
+                continuousGraph = true
+            }
+
+        }
+
+        lineColor.set()
+        graphPath.lineWidth = lineWidth
+        graphPath.stroke()
+    }
+}
+
+private extension CGPoint {
+    func toCartesianFromPoint(origin: CGPoint, scale: CGFloat = 1.0) -> CGPoint {
+        return CGPoint(x: (self.x - origin.x) / scale, y: (self.y + origin.y) / scale)
+    }
+    func toPointFromCartesian(origin: CGPoint, scale: CGFloat = 1.0) -> CGPoint {
+        return CGPoint(x: origin.x + (self.x * scale), y: origin.y - (self.y * scale))
+    }
 }

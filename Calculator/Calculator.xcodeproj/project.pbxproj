@@ -16,6 +16,7 @@
 		481B9DD51EE653550050242B /* CalculatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481B9DD41EE653550050242B /* CalculatorUITests.swift */; };
 		4890D05C1EE70F43000D3B58 /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4890D05B1EE70F43000D3B58 /* CalculatorBrain.swift */; };
 		4890D05D1EE70F43000D3B58 /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4890D05B1EE70F43000D3B58 /* CalculatorBrain.swift */; };
+		48D722B61FB6564B00E7A485 /* AxesDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D722B51FB6564B00E7A485 /* AxesDrawer.swift */; };
 		48F81B3E1FB52B61001AEFDC /* GraphingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F81B3D1FB52B61001AEFDC /* GraphingViewController.swift */; };
 		48F81B401FB55355001AEFDC /* GraphingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F81B3F1FB55355001AEFDC /* GraphingView.swift */; };
 		48F81B421FB55F40001AEFDC /* GraphingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F81B411FB55F40001AEFDC /* GraphingModel.swift */; };
@@ -54,6 +55,7 @@
 		481B9DD41EE653550050242B /* CalculatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorUITests.swift; sourceTree = "<group>"; };
 		481B9DD61EE653550050242B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4890D05B1EE70F43000D3B58 /* CalculatorBrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorBrain.swift; sourceTree = "<group>"; };
+		48D722B51FB6564B00E7A485 /* AxesDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AxesDrawer.swift; sourceTree = "<group>"; };
 		48F81B3D1FB52B61001AEFDC /* GraphingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphingViewController.swift; sourceTree = "<group>"; };
 		48F81B3F1FB55355001AEFDC /* GraphingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphingView.swift; sourceTree = "<group>"; };
 		48F81B411FB55F40001AEFDC /* GraphingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphingModel.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 				48F81B411FB55F40001AEFDC /* GraphingModel.swift */,
 				48F81B3D1FB52B61001AEFDC /* GraphingViewController.swift */,
 				48F81B3F1FB55355001AEFDC /* GraphingView.swift */,
+				48D722B51FB6564B00E7A485 /* AxesDrawer.swift */,
 				481B9DE21EE654510050242B /* Supporting Files */,
 			);
 			path = Calculator;
@@ -293,6 +296,7 @@
 				481B9DB71EE653550050242B /* CalculatorViewController.swift in Sources */,
 				48F81B401FB55355001AEFDC /* GraphingView.swift in Sources */,
 				48F81B421FB55F40001AEFDC /* GraphingModel.swift in Sources */,
+				48D722B61FB6564B00E7A485 /* AxesDrawer.swift in Sources */,
 				48F81B3E1FB52B61001AEFDC /* GraphingViewController.swift in Sources */,
 				481B9DB51EE653550050242B /* AppDelegate.swift in Sources */,
 			);
@@ -381,7 +385,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 32;
+				CURRENT_PROJECT_VERSION = 33;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -440,7 +444,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 32;
+				CURRENT_PROJECT_VERSION = 33;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
