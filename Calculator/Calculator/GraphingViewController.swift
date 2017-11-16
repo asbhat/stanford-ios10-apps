@@ -39,24 +39,27 @@ class GraphingViewController: UIViewController {
 
     private var graphingModel = GraphingModel() {
         didSet {
-            updateGraphFunc()
+            updateGraphingViewFunction()
         }
     }
     // var graphingModel: (equation: ((Double) -> Double)?, description: String?)
 
     @IBOutlet weak var graphingView: GraphingView! {
         didSet {
-            updateGraphFunc()
+            updateGraphingViewFunction()
         }
     }
 
-    private func updateGraphFunc() {
-        graphingView?.function = { [weak weakSelf = self] (x) -> CGFloat in
-            if let f = weakSelf?.graphingModel.equation {
-                return CGFloat(f(Double(x)))
-            }
-            return CGFloat()
+    private func updateGraphingViewFunction() {
+        guard graphingModel.equation != nil else {
+            return
         }
+        graphingView?.function = { [weak weakSelf = self] in CGFloat( weakSelf!.graphingModel.equation!( Double($0) ) ) }
+    }
+
+    func setEquation(description: String, equation: @escaping (Double) -> Double) {
+        graphingModel.description = description
+        graphingModel.equation = equation
     }
 
     /*

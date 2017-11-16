@@ -157,4 +157,23 @@ class CalculatorViewController: UIViewController {
             mValue.text = ""
         }
     }
+
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if identifier == "graph" {
+            let evaluation = brain.evaluate(using: ["M": 1])
+            if !evaluation.isPending && !evaluation.description.isEmpty && evaluation.errorMessage == nil {
+                return true
+            }
+        }
+        return false
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let graphingVC = segue.destination as? GraphingViewController {
+            let evaluation = brain.evaluate(using: ["M": 1])
+            graphingVC.setEquation(description: evaluation.description) { [weak weakSelf = self] in
+                weakSelf?.brain.evaluate(using: ["M": $0] ).result ?? 0
+            }
+        }
+    }
 }
