@@ -72,4 +72,11 @@ class GraphingViewController: UIViewController {
     }
     */
 
+    override func viewWillLayoutSubviews() {
+         graphingView.saveOriginToCenterDifference()
+    }
+    override func viewDidLayoutSubviews() {
+         graphingView.applyOriginToCenterDifference()
+    }
+
 }

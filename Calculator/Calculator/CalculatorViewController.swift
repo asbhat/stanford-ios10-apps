@@ -34,6 +34,15 @@ class CalculatorViewController: UIViewController {
         return .lightContent
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
     private let displayFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.minimumIntegerDigits = 1
@@ -169,11 +178,16 @@ class CalculatorViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let graphingVC = segue.destination as? GraphingViewController {
+        var destinationVC = segue.destination
+        if let navigationVC = destinationVC as? UINavigationController {
+            destinationVC = navigationVC.visibleViewController ?? destinationVC
+        }
+        if let graphingVC = destinationVC as? GraphingViewController {
             let evaluation = brain.evaluate(using: ["M": 1])
             graphingVC.setEquation(description: evaluation.description) { [weak weakSelf = self] in
                 weakSelf?.brain.evaluate(using: ["M": $0] ).result ?? 0
             }
+            graphingVC.navigationItem.title = evaluation.description
         }
     }
 }
