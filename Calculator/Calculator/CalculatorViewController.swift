@@ -183,11 +183,12 @@ class CalculatorViewController: UIViewController {
             destinationVC = navigationVC.visibleViewController ?? destinationVC
         }
         if let graphingVC = destinationVC as? GraphingViewController {
-            let evaluation = brain.evaluate(using: ["M": 1])
-            graphingVC.setEquation(description: evaluation.description) { [weak weakSelf = self] in
-                weakSelf?.brain.evaluate(using: ["M": $0] ).result ?? 0
+            let brainCopy = brain  // copied so additional changes don't affect the graph
+            let description = brainCopy.evaluate(using: ["M": 1]).description
+            graphingVC.setEquation(description: description) {
+                brainCopy.evaluate(using: ["M": $0] ).result ?? 0
             }
-            graphingVC.navigationItem.title = evaluation.description
+            graphingVC.navigationItem.title = description
         }
     }
 }
