@@ -78,6 +78,16 @@ class GraphingView: UIView {
         graphPath.lineWidth = lineWidth
         graphPath.stroke()
     }
+
+    private var originToCenter: (dx: CGFloat, dy: CGFloat) = (0, 0)
+    func saveOriginToCenterDifference() {
+        if let o = origin {
+            originToCenter = (o.x - bounds.midX, o.y - bounds.midY)
+        }
+    }
+    func applyOriginToCenterDifference() {
+        origin? = CGPoint(x: originToCenter.dx + bounds.midX, y: originToCenter.dy + bounds.midY)
+    }
 }
 
 private extension CGPoint {

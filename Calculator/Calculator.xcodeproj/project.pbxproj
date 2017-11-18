@@ -14,6 +14,7 @@
 		481B9DBF1EE653550050242B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 481B9DBD1EE653550050242B /* LaunchScreen.storyboard */; };
 		481B9DCA1EE653550050242B /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481B9DC91EE653550050242B /* CalculatorTests.swift */; };
 		481B9DD51EE653550050242B /* CalculatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481B9DD41EE653550050242B /* CalculatorUITests.swift */; };
+		484FB4391FBF99B000C3A7B0 /* CalculatorSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FB4381FBF99B000C3A7B0 /* CalculatorSplitViewController.swift */; };
 		4890D05C1EE70F43000D3B58 /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4890D05B1EE70F43000D3B58 /* CalculatorBrain.swift */; };
 		4890D05D1EE70F43000D3B58 /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4890D05B1EE70F43000D3B58 /* CalculatorBrain.swift */; };
 		48D722B61FB6564B00E7A485 /* AxesDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D722B51FB6564B00E7A485 /* AxesDrawer.swift */; };
@@ -54,6 +55,7 @@
 		481B9DD01EE653550050242B /* CalculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		481B9DD41EE653550050242B /* CalculatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorUITests.swift; sourceTree = "<group>"; };
 		481B9DD61EE653550050242B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		484FB4381FBF99B000C3A7B0 /* CalculatorSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorSplitViewController.swift; sourceTree = "<group>"; };
 		4890D05B1EE70F43000D3B58 /* CalculatorBrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorBrain.swift; sourceTree = "<group>"; };
 		48D722B51FB6564B00E7A485 /* AxesDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AxesDrawer.swift; sourceTree = "<group>"; };
 		48F81B3D1FB52B61001AEFDC /* GraphingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphingViewController.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				4890D05B1EE70F43000D3B58 /* CalculatorBrain.swift */,
 				481B9DB61EE653550050242B /* CalculatorViewController.swift */,
 				481B9DB81EE653550050242B /* Main.storyboard */,
+				484FB4381FBF99B000C3A7B0 /* CalculatorSplitViewController.swift */,
 				48F81B411FB55F40001AEFDC /* GraphingModel.swift */,
 				48F81B3D1FB52B61001AEFDC /* GraphingViewController.swift */,
 				48F81B3F1FB55355001AEFDC /* GraphingView.swift */,
@@ -295,6 +298,7 @@
 				4890D05C1EE70F43000D3B58 /* CalculatorBrain.swift in Sources */,
 				481B9DB71EE653550050242B /* CalculatorViewController.swift in Sources */,
 				48F81B401FB55355001AEFDC /* GraphingView.swift in Sources */,
+				484FB4391FBF99B000C3A7B0 /* CalculatorSplitViewController.swift in Sources */,
 				48F81B421FB55F40001AEFDC /* GraphingModel.swift in Sources */,
 				48D722B61FB6564B00E7A485 /* AxesDrawer.swift in Sources */,
 				48F81B3E1FB52B61001AEFDC /* GraphingViewController.swift in Sources */,
@@ -385,7 +389,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 34;
+				CURRENT_PROJECT_VERSION = 35;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -444,7 +448,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 34;
+				CURRENT_PROJECT_VERSION = 35;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
