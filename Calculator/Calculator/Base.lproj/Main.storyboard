@@ -63,7 +63,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="500" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="bCf-u3-bCu">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="386"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yTj-rD-e7s">
+                                            <button opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yTj-rD-e7s">
                                                 <rect key="frame" x="0.0" y="0.0" width="40" height="69"/>
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
@@ -475,6 +475,7 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <outlet property="display" destination="PST-nh-c1z" id="QAb-LI-SAH"/>
+                        <outlet property="graph" destination="yTj-rD-e7s" id="D3b-if-sc1"/>
                         <outlet property="history" destination="7mJ-rL-yx8" id="Wo1-ub-ABz"/>
                         <outlet property="mValue" destination="ZgA-LG-TKD" id="0x7-Gl-YtT"/>
                         <outlet property="undoBackspace" destination="sZ6-2j-Nwp" id="AMk-lS-wxT"/>
@@ -561,6 +562,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Gxy-h2-Ozi"/>
+        <segue reference="02K-CQ-Fbu"/>
     </inferredMetricsTieBreakers>
 </document>

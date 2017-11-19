@@ -26,6 +26,7 @@ class CalculatorViewController: UIViewController {
     @IBOutlet weak var history: UILabel!
     @IBOutlet weak var mValue: UILabel!
     @IBOutlet weak var undoBackspace: UIButton!
+    @IBOutlet weak var graph: UIButton!
 
     override var prefersStatusBarHidden: Bool {
         return false
@@ -156,6 +157,7 @@ class CalculatorViewController: UIViewController {
             display.text = evaluation.errorMessage
         }
         updateMValue()
+        updateGraphAbility()
     }
 
     private func updateMValue() {
@@ -167,12 +169,22 @@ class CalculatorViewController: UIViewController {
         }
     }
 
+    private var canGraph = false {
+        willSet {
+            UIView.performWithoutAnimation {
+                graph.alpha = newValue ? 1.0 : 0.5
+                graph.layoutIfNeeded()
+            }
+        }
+    }
+    private func updateGraphAbility() {
+        let evaluation = brain.evaluate(using: ["M": 1])
+        canGraph = !evaluation.isPending && !evaluation.description.isEmpty && evaluation.errorMessage == nil
+    }
+
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "graph" {
-            let evaluation = brain.evaluate(using: ["M": 1])
-            if !evaluation.isPending && !evaluation.description.isEmpty && evaluation.errorMessage == nil {
-                return true
-            }
+            return canGraph
         }
         return false
     }
