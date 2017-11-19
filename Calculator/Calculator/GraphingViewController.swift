@@ -46,6 +46,13 @@ class GraphingViewController: UIViewController {
 
     @IBOutlet weak var graphingView: GraphingView! {
         didSet {
+            let pinchRecognizer = UIPinchGestureRecognizer(target: graphingView, action: #selector(graphingView.zoom(byReactingTo:)))
+            let panRecognizer = UIPanGestureRecognizer(target: graphingView, action: #selector(graphingView.move(byReactingTo:)))
+            let doubleTapRecognizer = UITapGestureRecognizer(target: graphingView, action: #selector(graphingView.shift(byReactingTo:)))
+            doubleTapRecognizer.numberOfTapsRequired = 2
+            graphingView.addGestureRecognizer(pinchRecognizer)
+            graphingView.addGestureRecognizer(panRecognizer)
+            graphingView.addGestureRecognizer(doubleTapRecognizer)
             updateGraphingViewFunction()
         }
     }

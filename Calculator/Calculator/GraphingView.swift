@@ -35,6 +35,35 @@ class GraphingView: UIView {
 
     private var axes = AxesDrawer(color: UIColor.white)
 
+    @objc func zoom(byReactingTo pinchRecognizer: UIPinchGestureRecognizer) {
+        switch  pinchRecognizer.state {
+        case .changed, .ended:
+            scale *= pinchRecognizer.scale
+            pinchRecognizer.scale = 1  // reset scale so only incremental changes are applied
+        default:
+            break
+        }
+    }
+
+    @objc func move(byReactingTo panRecognizer: UIPanGestureRecognizer) {
+        switch panRecognizer.state {
+        case .changed, .ended:
+            origin = origin.add(point: panRecognizer.translation(in: self))
+            panRecognizer.setTranslation(CGPoint.zero, in: self)  // reset scale so only incremental changes are applied
+        default:
+            break
+        }
+    }
+
+    @objc func shift(byReactingTo doubleTapRecognizer: UITapGestureRecognizer) {
+        switch doubleTapRecognizer.state {
+        case .ended:
+            origin = doubleTapRecognizer.location(in: self)
+        default:
+            break
+        }
+    }
+
     override func draw(_ rect: CGRect) {
         origin = origin ?? CGPoint(x: bounds.midX, y: bounds.midY)
         axes.contentScaleFactor = contentScaleFactor
@@ -98,5 +127,8 @@ private extension CGPoint {
     }
     func toPointFromCartesian(origin: CGPoint, scale: CGFloat = 1.0) -> CGPoint {
         return CGPoint(x: origin.x + (self.x * scale), y: origin.y - (self.y * scale))
+    }
+    func add(point: CGPoint) -> CGPoint {
+        return CGPoint(x: self.x + point.x, y: self.y + point.y)
     }
 }
