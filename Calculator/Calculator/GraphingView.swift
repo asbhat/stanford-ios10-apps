@@ -20,10 +20,12 @@
 
 import UIKit
 
+@IBDesignable
 class GraphingView: UIView {
 
     var origin: CGPoint! { didSet { setNeedsDisplay() } }
 
+    @IBInspectable
     var scale: CGFloat = 50.0 { didSet { setNeedsDisplay() } }
 
     var lineColor: UIColor = UIColor.blue { didSet { setNeedsDisplay() } }
