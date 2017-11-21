@@ -204,3 +204,16 @@ class CalculatorViewController: UIViewController {
         }
     }
 }
+
+@IBDesignable
+extension UIButton {
+    @IBInspectable var cornerRadius: CGFloat {
+        get {
+            return layer.cornerRadius
+        }
+        set (newRadius) {
+            layer.cornerRadius = newRadius
+            layer.masksToBounds = newRadius > 0
+        }
+    }
+}

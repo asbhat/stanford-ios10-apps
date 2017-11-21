@@ -10,6 +10,11 @@ import UIKit
 
 class CalculatorSplitViewController: UISplitViewController {
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.delegate = self
+    }
+
     override var childViewControllerForStatusBarHidden: UIViewController? {
         return self.childViewControllers.first
     }
@@ -17,4 +22,14 @@ class CalculatorSplitViewController: UISplitViewController {
         return self.childViewControllers.first
     }
 
+}
+
+extension CalculatorSplitViewController: UISplitViewControllerDelegate {
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+        if let secondaryNavigationController = secondaryViewController as? UINavigationController,
+            let _ = secondaryNavigationController.visibleViewController as? GraphingViewController {
+            return true
+        }
+        return false
+    }
 }
