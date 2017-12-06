@@ -45,6 +45,17 @@ class GraphingView: UIView {
         }
     }
 
+    @objc func oneFingerZoom(byReactingTo tapPanRecognizer: UITapThenPanGestureRecognizer) {
+        switch tapPanRecognizer.state {
+        case .changed, .ended:
+            let translation = tapPanRecognizer.translation(in: self)
+            scale *= (1 + translation.x / 100.0 + translation.y / 100.0)
+            tapPanRecognizer.setTranslation(CGPoint.zero, in: self)
+        default:
+            break
+        }
+    }
+
     @objc func move(byReactingTo panRecognizer: UIPanGestureRecognizer) {
         switch panRecognizer.state {
         case .changed, .ended:

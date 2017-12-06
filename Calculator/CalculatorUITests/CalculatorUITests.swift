@@ -57,7 +57,6 @@ class CalculatorUITests: XCTestCase {
     }
 
     private func buttonsOnScreen(_ buttonArray: [String], callingFile: StaticString = #file, callingLine: UInt = #line) {
-        print("file: \(callingFile), line: \(callingLine)")
         let window = app.windows.element(boundBy: 0)
         for buttonName in buttonArray {
             let button = app.buttons[buttonName]
@@ -432,4 +431,5 @@ class CalculatorUITests: XCTestCase {
         XCTAssert(app.staticTexts["8 ÷ 0 ="].exists)
         XCTAssert(app.staticTexts["Error! cannot divide by zero"].exists)
     }
+
 }

@@ -39,17 +39,21 @@ class GraphingViewController: UIViewController {
             let panRecognizer = UIPanGestureRecognizer(target: graphingView, action: #selector(graphingView.move(byReactingTo:)))
             let doubleTapRecognizer = UITapGestureRecognizer(target: graphingView, action: #selector(graphingView.shift(byReactingTo:)))
             doubleTapRecognizer.numberOfTapsRequired = 2
+            let tapPanRecognizer = UITapThenPanGestureRecognizer(target: graphingView, action: #selector(graphingView.oneFingerZoom(byReactingTo:)))
+
+            doubleTapRecognizer.delegate = self
+            tapPanRecognizer.delegate = self
+
             graphingView.addGestureRecognizer(pinchRecognizer)
             graphingView.addGestureRecognizer(panRecognizer)
             graphingView.addGestureRecognizer(doubleTapRecognizer)
+            graphingView.addGestureRecognizer(tapPanRecognizer)
             updateGraphingViewFunction()
         }
     }
 
     private func updateGraphingViewFunction() {
-        guard graphingModel.equation != nil else {
-            return
-        }
+        guard graphingModel.equation != nil else { return }
         graphingView?.function = { [weak weakSelf = self] in CGFloat( weakSelf!.graphingModel.equation!( Double($0) ) ) }
     }
 
@@ -72,6 +76,7 @@ class GraphingViewController: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        guard graphingView != nil else { return }  // for some reason getting called before viewDidLoad()...
         UserDefaults.standard.set(Double(graphingView.scale), forKey: GraphDefaultKeys.scale)
         UserDefaults.standard.set(Double(graphingView.origin.x), forKey: GraphDefaultKeys.originX)
         UserDefaults.standard.set(Double(graphingView.origin.y), forKey: GraphDefaultKeys.originY)
@@ -82,6 +87,18 @@ class GraphingViewController: UIViewController {
     }
     override func viewDidLayoutSubviews() {
          graphingView.applyOriginToCenterDifference()
+    }
+}
+
+extension GraphingViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.view != otherGestureRecognizer.view {
+            return false
+        }
+        if gestureRecognizer is UIPanGestureRecognizer || otherGestureRecognizer is UIPanGestureRecognizer {
+            return false
+        }
+        return true
     }
 }
 
